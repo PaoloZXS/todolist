@@ -1,0 +1,126 @@
+Voglio che tu generi un progetto completo per una PWA chiamata “Cose da Fare”.
+
+OBIETTIVO
+Creare una Progressive Web App installabile (scaricabile come app) che permetta a più utenti di:
+- registrarsi o fare login
+- essere riconosciuti in tutte le pagine
+- vedere una lista unica di “cose da fare” inserite da tutti gli utenti
+- aggiungere nuove cose da fare
+- modificare e cancellare solo quelle inserite da loro
+- spuntare come FATTA/DA FARE qualsiasi voce in lista
+- vedere le cose FATTE spostate automaticamente in fondo e sottolineate
+
+STACK TECNICO
+- HTML + CSS + JavaScript (senza framework pesanti)
+- Ogni pagina deve avere il suo .html, .js e .css separati
+- Database: TURSO (usa funzioni JS con placeholder per URL e token)
+- PWA completa: manifest.json, service-worker.js, icone, caching offline
+- Pubblicabile su Vercel come sito statico
+
+STRUTTURA DEL PROGETTO
+Crea questa struttura:
+
+project-root/
+  index.html
+  /login/
+    login.html
+    login.js
+    login.css
+  /todos/
+    todos.html
+    todos.js
+    todos.css
+  /js/
+    turso-api.js
+    session.js
+  /css/
+    base.css
+  /assets/icons/
+    icon-192.png
+    icon-512.png
+  manifest.json
+  service-worker.js
+
+REQUISITI FUNZIONALI
+
+LOGIN
+- Pagina login.html con username e password
+- Funzione loginUser() in turso-api.js
+- Dopo login, salva l’utente in session.js (localStorage)
+- Se l’utente non è loggato, reindirizza sempre a login.html
+
+LISTA COSE DA FARE
+Ogni elemento deve contenere:
+- data di inserimento
+- descrizione
+- utente che l’ha inserita
+- stato: FATTA / DA FARE
+
+Ogni riga deve avere 3 icone:
+- modifica
+- cancella
+- toggle FATTA/DA FARE
+
+REGOLE UTENTE
+- Ogni utente può modificare/cancellare solo le proprie voci
+- Può spuntare FATTA/DA FARE qualsiasi voce
+
+GESTIONE FATTA/DA FARE
+- Se FATTA → sottolineata + spostata in fondo alla lista
+- Se DA FARE → torna nella parte superiore
+
+COLORI E UI
+- Nessun colore rosa, fucsia, giallo
+- Palette tecnica: grigi, blu, toni neutri
+- Stile moderno, leggibile, professionale
+
+PWA (INSTALLABILE)
+Genera:
+- manifest.json completo (nome, short_name, icone, colori, start_url, display standalone)
+- service-worker.js con caching statico
+- registrazione del service worker in index.html
+- bottone “📲 Scarica App” che appare quando la PWA è installabile (gestione beforeinstallprompt)
+
+TURSO
+In turso-api.js crea funzioni con placeholder:
+- loginUser(username, password)
+- getTodos()
+- addTodo(text, userId)
+- updateTodo(id, text)
+- deleteTodo(id)
+- toggleTodoStatus(id, status)
+
+Non inserire token reali, usa:
+const TURSO_DB_URL = "INSERISCI_URL";
+const TURSO_DB_TOKEN = "INSERISCI_TOKEN";
+
+OUTPUT RICHIESTO
+Genera TUTTI i file completi:
+- index.html
+- login.html + login.js + login.css
+- todos.html + todos.js + todos.css
+- base.css
+- turso-api.js
+- session.js
+- manifest.json
+- service-worker.js
+- icone minime (puoi generare versioni base in PNG)
+- eventuali helper JS
+
+Il codice deve essere completo, funzionante e pronto da caricare su GitHub e Vercel.
+
+
+USA L’IMMAGINE CHE TI HO ALLEGATO COME RIFERIMENTO VISIVO OBBLIGATORIO.
+Riproduci fedelmente:
+- colori
+- stile tecnico
+- layout della tabella
+- posizione delle icone
+- stile del bottone blu
+- header con saluto
+- separazione tra attività da fare e fatte
+- Underline delle attività completate
+
+Tutti i file HTML, CSS e JS devono rispettare questo stile grafico.
+
+

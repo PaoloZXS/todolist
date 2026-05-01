@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cose da Fare</title>
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <meta name="theme-color" content="#293248" />
+  </head>
+  <body class="app-shell">
+    <main class="center-shell">
+      <section class="card card-compact">
+        <div class="header-row">
+          <div>
+            <p class="eyebrow">Cose da Fare</p>
+            <h1 class="page-title">Benvenuto</h1>
+          </div>
+        </div>
+        <p class="intro-text">
+          Apri la tua lista condivisa di attività, gestisci i tuoi impegni e
+          accedi alla PWA installabile.
+        </p>
+        <div class="actions-row">
+          <a
+            id="entryButton"
+            class="button button-primary"
+            href="./login/login.html"
+            >Carica App</a
+          >
+          <a class="button button-secondary" href="./login/login.html">Login</a>
+        </div>
+      </section>
+    </main>
+    <script type="module">
+      import { getCurrentUser } from "./js/session.js";
+      const entryButton = document.getElementById("entryButton");
+      const user = getCurrentUser();
+      if (user) {
+        entryButton.textContent = "Vai alla lista";
+        entryButton.href = "./todos/todos.html";
+      } else {
+        entryButton.textContent = "Login / Registrati";
+        entryButton.href = "./login/login.html";
+      }
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .catch(console.error);
+        });
+      }
+    </script>
+  </body>
+</html>
