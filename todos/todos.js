@@ -31,7 +31,6 @@ const todoText = document.getElementById("todoText");
 const todoPrivate = document.getElementById("todoPrivate");
 const todoIdField = document.getElementById("todoId");
 const modalTitle = document.getElementById("modalTitle");
-const userGroupLabel = document.getElementById("userGroupLabel");
 
 let deferredPrompt = null;
 let currentTodos = [];
@@ -69,9 +68,6 @@ if (isMobile) {
 }
 
 userGreeting.textContent = `Ciao, ${user.name}`;
-if (user.groupName) {
-  userGroupLabel.textContent = `Gruppo: ${user.groupName}`;
-}
 
 console.log("[PWA] isStandalone:", isStandalone);
 console.log("[PWA] beforeinstallprompt awaiting...");
