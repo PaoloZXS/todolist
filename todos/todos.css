@@ -294,6 +294,12 @@
   }
 }
 
+@media (max-width: 1120px) {
+  .card-actions {
+    margin-top: 22px;
+  }
+}
+
 @media (max-width: 560px) {
   body.todos-shell .center-shell {
     width: 100%;
