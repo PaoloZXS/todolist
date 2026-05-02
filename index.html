@@ -72,13 +72,29 @@
         entryButton.href = "./login/login.html";
       }
 
+      // Debug PWA installation
+      console.log("[PWA] isStandalone:", isStandalone);
+      console.log("[PWA] beforeinstallprompt awaiting...");
+
       window.addEventListener("beforeinstallprompt", (event) => {
+        console.log("[PWA] beforeinstallprompt RECEIVED ✅");
         event.preventDefault();
         deferredPrompt = event;
       });
 
+      window.addEventListener(
+        "beforeinstallprompt",
+        () => {
+          console.log("[PWA] beforeinstallprompt event fired");
+        },
+        { once: false }
+      );
+
       installBtnHome.addEventListener("click", async () => {
+        console.log("[PWA] Install button clicked");
+        console.log("[PWA] deferredPrompt:", deferredPrompt);
         if (!deferredPrompt) {
+          console.log("[PWA] No deferredPrompt, showing fallback");
           alert(getInstallHint());
           return;
         }
@@ -88,17 +104,57 @@
       });
 
       window.addEventListener("appinstalled", () => {
+        console.log("[PWA] App installed! 🎉");
         deferredPrompt = null;
         installBtnHome.classList.add("hidden");
       });
 
       if ("serviceWorker" in navigator) {
+        console.log("[PWA] Service Worker supported");
         window.addEventListener("load", () => {
           navigator.serviceWorker
             .register("/service-worker.js")
-            .catch(console.error);
+            .then((reg) => {
+              console.log("[PWA] Service Worker registered ✅", reg);
+              console.log("[PWA] SW active:", reg.active);
+              console.log("[PWA] SW installing:", reg.installing);
+              console.log("[PWA] SW waiting:", reg.waiting);
+            })
+            .catch((err) => {
+              console.error("[PWA] Service Worker registration failed ❌", err);
+            });
         });
+      } else {
+        console.log("[PWA] Service Worker NOT supported ❌");
       }
+
+      // Check manifest
+      fetch("/manifest.json")
+        .then((res) => {
+          console.log("[PWA] Manifest fetch status:", res.status);
+          return res.json();
+        })
+        .then((manifest) => {
+          console.log("[PWA] Manifest loaded ✅:", manifest);
+        })
+        .catch((err) => {
+          console.error("[PWA] Manifest fetch failed ❌", err);
+        });
+
+      // Check icons
+      Promise.all([
+        fetch("/assets/icons/icon-192.png"),
+        fetch("/assets/icons/icon-512.png")
+      ])
+        .then((responses) => {
+          console.log(
+            "[PWA] Icons status:",
+            responses.map((r) => r.status)
+          );
+        })
+        .catch((err) => {
+          console.error("[PWA] Icons fetch failed ❌", err);
+        });
     </script>
   </body>
 </html>

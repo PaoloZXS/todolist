@@ -58,18 +58,26 @@ if (isStandalone) {
 
 userGreeting.textContent = `Ciao, ${user.name}`;
 
+console.log("[PWA] isStandalone:", isStandalone);
+console.log("[PWA] beforeinstallprompt awaiting...");
+
 window.addEventListener("beforeinstallprompt", (event) => {
+  console.log("[PWA] beforeinstallprompt RECEIVED ✅");
   event.preventDefault();
   deferredPrompt = event;
 });
 
 installBtn.addEventListener("click", async () => {
+  console.log("[PWA] Install button clicked");
+  console.log("[PWA] deferredPrompt:", deferredPrompt);
   if (!deferredPrompt) {
+    console.log("[PWA] No deferredPrompt, showing fallback");
     alert(getInstallHint());
     return;
   }
   deferredPrompt.prompt();
   const choice = await deferredPrompt.userChoice;
+  console.log("[PWA] User choice:", choice.outcome);
   if (choice.outcome === "accepted") {
     installBtn.classList.add("hidden");
   }
