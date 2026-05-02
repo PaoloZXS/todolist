@@ -184,12 +184,14 @@ function createTodoRow(item) {
       <span class="todo-date">${item.createdAt}</span>
       <span class="todo-owner">${item.createdBy}</span>
     </div>
-    <span class="todo-text">${item.text}</span>
-    <span class="todo-actions">
-      <button class="icon-button edit-btn" title="Modifica" data-id="${item.id}">✏️</button>
-      <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
-      <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
-    </span>
+    <div class="todo-body">
+      <span class="todo-text">${item.text}</span>
+      <span class="todo-actions">
+        <button class="icon-button edit-btn" title="Modifica" data-id="${item.id}">✏️</button>
+        <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
+        <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
+      </span>
+    </div>
   `;
 
   row

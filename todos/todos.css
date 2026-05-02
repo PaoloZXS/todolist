@@ -105,8 +105,12 @@
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Su desktop .todo-meta mostra solo la data (utente è colonna separata) */
+/* Su desktop .todo-meta e .todo-body usano display:contents per stare nella griglia */
 .todo-meta {
+  display: contents;
+}
+
+.todo-body {
   display: contents;
 }
 
@@ -278,7 +282,7 @@
     text-align: right;
   }
 
-  /* Riga 2: descrizione */
+  /* Riga 2: descrizione + icone sulla stessa riga */
   .todo-text {
     font-size: 0.95rem;
     font-weight: 500;
@@ -286,18 +290,28 @@
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
+    flex: 1;
   }
 
-  /* Riga 3: icone a sinistra */
-  .todo-actions {
-    justify-content: flex-start;
+  /* Riga 2 wrapper: testo + icone affiancati */
+  .todo-row .todo-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 8px;
   }
 
+  /* Icone sulla destra della descrizione */
+  .todo-actions {
+    justify-content: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
   .todo-actions button {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
     border-radius: 10px;
   }
 
