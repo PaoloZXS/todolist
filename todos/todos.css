@@ -260,22 +260,25 @@
     display: block;
   }
 
-  /* Riga 1: data a sinistra, utente a destra */
+  /* Riga 1: data sinistra + utente a seguire con gap */
   .todo-row .todo-meta {
-    display: flex;
-    justify-content: space-between;
+    display: flex !important;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
   }
 
   .todo-date {
     font-size: 0.78rem;
     color: var(--muted);
+    flex-shrink: 0;
   }
 
   .todo-owner {
     font-size: 0.78rem;
     color: var(--muted);
-    text-align: right;
   }
 
   /* Riga 2: descrizione + icone sulla stessa riga */
@@ -289,12 +292,13 @@
     flex: 1;
   }
 
-  /* Riga 2 wrapper: testo + icone affiancati */
+  /* Riga 2 wrapper: testo sinistra + icone destra */
   .todo-row .todo-body {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    width: 100%;
   }
 
   /* Icone sulla destra della descrizione */
