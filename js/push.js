@@ -91,12 +91,7 @@ export async function initPushNotifications(user) {
       const subscription = await registration.pushManager.getSubscription();
       if (subscription) {
         await savePushSubscription(user.id, user.groupName || "", subscription);
-        updatePushButtonState(
-          pushButton,
-          "Le notifiche sono attive per questo dispositivo.",
-          true,
-          true
-        );
+        updatePushButtonState(pushButton, "", true, true);
       } else {
         updatePushButtonState(
           pushButton,
