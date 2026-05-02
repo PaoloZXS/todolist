@@ -103,21 +103,30 @@
 
 .todo-row {
   display: grid;
-  grid-template-columns: 130px 120px minmax(280px, 1fr) auto;
-  align-items: center;
+  grid-template-columns: 130px minmax(1fr, 1fr) 92px;
+  align-items: start;
   gap: 16px;
   padding: 16px 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Su desktop .todo-meta e .todo-body usano display:contents per stare nella griglia */
 .todo-meta {
-  display: contents;
+  grid-column: 1;
 }
 
-.todo-body {
-  display: contents;
+.todo-content {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.todo-actions {
+  grid-column: 3;
+  align-self: end;
+  display: flex;
+  gap: 10px;
 }
 
 .todo-row:hover {
@@ -132,19 +141,8 @@
   opacity: 0.88;
 }
 
-.todo-row.done .todo-text {
+.todo-row.done .todo-title {
   text-decoration: line-through;
-}
-
-.todo-owner {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-}
-
-.todo-row.done .todo-owner .todo-updated {
-  text-decoration: none;
 }
 
 .todo-text {
@@ -153,6 +151,12 @@
   cursor: pointer;
 }
 
+.todo-title {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.todo-created,
 .todo-updated {
   font-size: 0.82rem;
   color: var(--muted);
