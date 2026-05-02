@@ -314,6 +314,11 @@
     padding: 12px;
   }
 
+  /* Nascondi pulsante install su mobile: si usa il prompt nativo del browser */
+  #installBtn {
+    display: none !important;
+  }
+
   /* Modal */
   .modal {
     padding: 18px 14px;

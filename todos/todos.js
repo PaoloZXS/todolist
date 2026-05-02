@@ -48,12 +48,16 @@ function getInstallHint() {
 
 const isStandalone =
   window.matchMedia("(display-mode: standalone)").matches ||
-  window.navigator.standalone;
+  window.matchMedia("(display-mode: fullscreen)").matches ||
+  window.matchMedia("(display-mode: minimal-ui)").matches ||
+  window.navigator.standalone === true;
 
-if (isStandalone) {
+// Su mobile nascondiamo sempre il pulsante (gestito dal CSS)
+// Su desktop lo mostriamo solo quando il browser offre il prompt
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+if (isStandalone || isMobile) {
   installBtn.classList.add("hidden");
-} else {
-  installBtn.classList.remove("hidden");
 }
 
 userGreeting.textContent = `Ciao, ${user.name}`;
