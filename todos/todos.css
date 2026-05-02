@@ -136,6 +136,10 @@
   text-decoration: line-through;
 }
 
+.todo-row.done .todo-text .todo-updated {
+  text-decoration: none;
+}
+
 .todo-text {
   color: var(--text);
   font-weight: 500;
