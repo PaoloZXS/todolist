@@ -18,22 +18,22 @@ async function apiRequest(path, options = {}) {
   return payload;
 }
 
-export async function loginUser(username, password) {
-  if (!username || !password) {
-    throw new Error("Inserisci username e password.");
+export async function loginUser(username, password, groupName) {
+  if (!username || !password || !groupName) {
+    throw new Error("Inserisci username, password e Azienda/Famiglia.");
   }
 
   const payload = await apiRequest("/api/login", {
     method: "POST",
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password, groupName })
   });
 
   return payload.user;
 }
 
-export async function getTodos(userId = "") {
+export async function getTodos(userId = "", groupName = "") {
   const query = userId
-    ? `/api/todos?userId=${encodeURIComponent(userId)}`
+    ? `/api/todos?userId=${encodeURIComponent(userId)}&groupName=${encodeURIComponent(groupName)}`
     : "/api/todos";
   const payload = await apiRequest(query);
   return payload.todos || [];

@@ -30,11 +30,19 @@ async function handleGet(_req, res) {
   await ensurePrivateColumn();
   try {
     const currentUserId = String(_req.query?.userId || "").trim();
+    const currentGroupName = String(_req.query?.groupName || "").trim();
     const queryArgs = [];
-    const visibilityFilter = currentUserId
-      ? `WHERE t.is_private = 0 OR t.user_id = ?`
-      : `WHERE t.is_private = 0`;
-    if (currentUserId) queryArgs.push(currentUserId);
+    const visibilityFilter =
+      currentUserId && currentGroupName
+        ? `WHERE (t.is_private = 0 AND u.group_name = ?) OR t.user_id = ?`
+        : currentUserId
+          ? `WHERE t.is_private = 0 OR t.user_id = ?`
+          : `WHERE t.is_private = 0`;
+    if (currentUserId && currentGroupName) {
+      queryArgs.push(currentGroupName, currentUserId);
+    } else if (currentUserId) {
+      queryArgs.push(currentUserId);
+    }
 
     const result = await execute(
       `SELECT

@@ -10,7 +10,7 @@ OBIETTIVO
 Creare una Progressive Web App installabile (scaricabile come app) che permetta a più utenti di:
 - registrarsi o fare login
 - essere riconosciuti in tutte le pagine
-- vedere una lista unica di “cose da fare” inserite da tutti gli utenti
+- vedere una lista unica di “cose da fare” inserite da tutti gli utenti appartenenti alla stessa Azienda/Famiglia
 - aggiungere nuove cose da fare
 - modificare e cancellare solo quelle inserite da loro
 - spuntare come FATTA/DA FARE qualsiasi voce in lista
@@ -50,7 +50,7 @@ project-root/
 REQUISITI FUNZIONALI
 
 LOGIN
-- Pagina login.html con username e password
+- Pagina login.html con username, password e Azienda/Famiglia
 - Funzione loginUser() in turso-api.js
 - Dopo login, salva l’utente in session.js (localStorage)
 - Se l’utente non è loggato, reindirizza sempre a login.html

@@ -5,6 +5,16 @@ import { methodNotAllowed, readJsonBody, sendJson } from "./_helpers.js";
 const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
 const ADMIN_DISPLAY_NAME = "Paolo Giorsetti";
 
+async function ensureUserGroupColumn() {
+  try {
+    await execute(
+      "ALTER TABLE users ADD COLUMN group_name TEXT NOT NULL DEFAULT ''"
+    );
+  } catch (error) {
+    // Ignore if column already exists.
+  }
+}
+
 function hashPassword(password) {
   return crypto.createHash("sha256").update(password).digest("hex");
 }
@@ -16,7 +26,8 @@ function formatUserResponse(user) {
     name:
       String(user.username).toLowerCase() === ADMIN_EMAIL
         ? ADMIN_DISPLAY_NAME
-        : String(user.username)
+        : String(user.username),
+    groupName: String(user.group_name || user.groupName || "")
   };
 }
 
@@ -29,13 +40,17 @@ export default async function handler(req, res) {
     const body = await readJsonBody(req);
     const username = String(body.username || "").trim();
     const password = String(body.password || "").trim();
+    const groupName = String(body.groupName || "").trim();
 
-    if (!username || !password) {
-      return sendJson(res, 400, { error: "Inserisci username e password." });
+    if (!username || !password || !groupName) {
+      return sendJson(res, 400, {
+        error: "Inserisci username, password e Azienda/Famiglia."
+      });
     }
 
+    await ensureUserGroupColumn();
     const userLookup = await execute(
-      "SELECT id, username, password_hash FROM users WHERE username = ? LIMIT 1",
+      "SELECT id, username, password_hash, group_name FROM users WHERE username = ? LIMIT 1",
       [username]
     );
 
@@ -43,14 +58,15 @@ export default async function handler(req, res) {
 
     if (!userLookup.rows.length) {
       const insertResult = await execute(
-        "INSERT INTO users (username, password_hash) VALUES (?, ?)",
-        [username, passwordHash]
+        "INSERT INTO users (username, password_hash, group_name) VALUES (?, ?, ?)",
+        [username, passwordHash, groupName]
       );
 
       return sendJson(res, 200, {
         user: formatUserResponse({
           id: insertResult.lastInsertRowid,
-          username
+          username,
+          groupName
         })
       });
     }
@@ -60,10 +76,18 @@ export default async function handler(req, res) {
       return sendJson(res, 401, { error: "Password non corretta." });
     }
 
+    if (existing.group_name && groupName && existing.group_name !== groupName) {
+      return sendJson(res, 401, {
+        error:
+          "Gruppo non corrispondente. Inserisci l'Azienda/Famiglia corretta."
+      });
+    }
+
     return sendJson(res, 200, {
       user: formatUserResponse({
         id: existing.id,
-        username: existing.username
+        username: existing.username,
+        group_name: existing.group_name
       })
     });
   } catch (error) {

@@ -9,6 +9,7 @@ if (user) {
 const form = document.getElementById("loginForm");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+const groupInput = document.getElementById("groupName");
 const message = document.getElementById("loginMessage");
 
 form.addEventListener("submit", async (event) => {
@@ -17,7 +18,8 @@ form.addEventListener("submit", async (event) => {
   try {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
-    const userData = await loginUser(username, password);
+    const groupName = groupInput.value.trim();
+    const userData = await loginUser(username, password, groupName);
     saveUserSession(userData);
     window.location.href = "../todos/todos.html";
   } catch (error) {
