@@ -32,16 +32,42 @@ const modalTitle = document.getElementById("modalTitle");
 let deferredPrompt = null;
 let currentTodos = [];
 
+function getInstallHint() {
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.includes("edg/")) {
+    return "Edge: menu ⋯ > App > Installa questo sito come app.";
+  }
+  if (ua.includes("chrome")) {
+    return "Chrome: menu ⋮ > Trasmetti, salva e condividi > Installa pagina come app.";
+  }
+  if (ua.includes("firefox")) {
+    return "Firefox desktop non supporta il prompt PWA standard. Usa Chrome o Edge per installare.";
+  }
+  return "Questo browser potrebbe non supportare l'installazione PWA automatica.";
+}
+
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone;
+
+if (isStandalone) {
+  installBtn.classList.add("hidden");
+} else {
+  installBtn.classList.remove("hidden");
+}
+
 userGreeting.textContent = `Ciao, ${user.name}`;
 
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   deferredPrompt = event;
-  installBtn.classList.remove("hidden");
 });
 
 installBtn.addEventListener("click", async () => {
-  if (!deferredPrompt) return;
+  if (!deferredPrompt) {
+    alert(getInstallHint());
+    return;
+  }
   deferredPrompt.prompt();
   const choice = await deferredPrompt.userChoice;
   if (choice.outcome === "accepted") {
