@@ -422,6 +422,7 @@
     justify-content: space-between;
     gap: 8px;
     width: 100%;
+    flex-wrap: nowrap;
   }
 
   /* Icone sulla destra della descrizione */
@@ -439,6 +440,8 @@
   .todo-content {
     padding-right: 0;
     gap: 4px;
+    width: auto;
+    flex: 1 1 auto;
   }
 
   .todo-actions button {
