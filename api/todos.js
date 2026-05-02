@@ -6,6 +6,16 @@ import {
   sendJson
 } from "./_helpers.js";
 
+async function ensurePrivateColumn() {
+  try {
+    await execute(
+      "ALTER TABLE todos ADD COLUMN is_private INTEGER NOT NULL DEFAULT 0"
+    );
+  } catch (error) {
+    // Ignore if column already exists or the DB provider does not support it.
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method === "GET") {
     return handleGet(req, res);
@@ -17,7 +27,15 @@ export default async function handler(req, res) {
 }
 
 async function handleGet(_req, res) {
+  await ensurePrivateColumn();
   try {
+    const currentUserId = String(_req.query?.userId || "").trim();
+    const queryArgs = [];
+    const visibilityFilter = currentUserId
+      ? `WHERE t.is_private = 0 OR t.user_id = ?`
+      : `WHERE t.is_private = 0`;
+    if (currentUserId) queryArgs.push(currentUserId);
+
     const result = await execute(
       `SELECT
          t.id,
@@ -25,13 +43,16 @@ async function handleGet(_req, res) {
          t.text,
          t.user_id,
          t.status,
+         t.is_private,
          CASE
            WHEN u.username = 'paolo.giorsetti@codarini.com' THEN 'Paolo Giorsetti'
            ELSE u.username
          END AS created_by
        FROM todos t
        JOIN users u ON u.id = t.user_id
-       ORDER BY CASE WHEN t.status = 'DA FARE' THEN 0 ELSE 1 END, datetime(t.created_at) DESC`
+       ${visibilityFilter}
+       ORDER BY CASE WHEN t.status = 'DA FARE' THEN 0 ELSE 1 END, datetime(t.created_at) DESC`,
+      queryArgs
     );
 
     return sendJson(res, 200, {
@@ -48,6 +69,12 @@ async function handlePost(req, res) {
     const body = await readJsonBody(req);
     const text = String(body.text || "").trim();
     const userId = String(body.userId || "").trim();
+    const isPrivate =
+      body.isPrivate === true ||
+      body.isPrivate === 1 ||
+      body.isPrivate === "true";
+
+    await ensurePrivateColumn();
 
     if (!text) {
       return sendJson(res, 400, {
@@ -69,8 +96,8 @@ async function handlePost(req, res) {
     }
 
     const insertResult = await execute(
-      "INSERT INTO todos (user_id, text, status) VALUES (?, ?, 'DA FARE')",
-      [userId, text]
+      "INSERT INTO todos (user_id, text, status, is_private) VALUES (?, ?, 'DA FARE', ?)",
+      [userId, text, isPrivate ? 1 : 0]
     );
 
     const created = await execute(
@@ -80,6 +107,7 @@ async function handlePost(req, res) {
          t.text,
          t.user_id,
          t.status,
+         t.is_private,
          u.username AS created_by
        FROM todos t
        JOIN users u ON u.id = t.user_id

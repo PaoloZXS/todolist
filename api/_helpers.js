@@ -34,6 +34,7 @@ export function mapTodoRow(row) {
     text: row.text,
     createdBy: row.created_by,
     userId: String(row.user_id),
-    status: row.status
+    status: row.status,
+    isPrivate: Boolean(row.is_private)
   };
 }

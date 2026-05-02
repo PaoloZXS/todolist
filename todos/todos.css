@@ -136,6 +136,13 @@
   cursor: pointer;
 }
 
+.private-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
 .todo-text:hover {
   color: var(--accent-soft);
   text-decoration: underline;

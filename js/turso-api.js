@@ -31,28 +31,34 @@ export async function loginUser(username, password) {
   return payload.user;
 }
 
-export async function getTodos() {
-  const payload = await apiRequest("/api/todos");
+export async function getTodos(userId = "") {
+  const query = userId
+    ? `/api/todos?userId=${encodeURIComponent(userId)}`
+    : "/api/todos";
+  const payload = await apiRequest(query);
   return payload.todos || [];
 }
 
-export async function addTodo(text, userId) {
+export async function addTodo(text, userId, isPrivate = false) {
   if (!text || !text.trim()) {
     throw new Error("La descrizione non può essere vuota.");
   }
 
   const payload = await apiRequest("/api/todos", {
     method: "POST",
-    body: JSON.stringify({ text: text.trim(), userId })
+    body: JSON.stringify({ text: text.trim(), userId, isPrivate })
   });
 
   return payload.todo;
 }
 
-export async function updateTodo(id, text, actingUserId) {
+export async function updateTodo(id, text, actingUserId, isPrivate) {
+  const body = { text: text.trim(), actingUserId };
+  if (isPrivate !== undefined) body.isPrivate = Boolean(isPrivate);
+
   const payload = await apiRequest(`/api/todos/${id}`, {
     method: "PATCH",
-    body: JSON.stringify({ text: text.trim(), actingUserId })
+    body: JSON.stringify(body)
   });
 
   return payload.todo;

@@ -20,6 +20,16 @@ async function isAdminUserId(userId) {
   );
 }
 
+async function ensurePrivateColumn() {
+  try {
+    await execute(
+      "ALTER TABLE todos ADD COLUMN is_private INTEGER NOT NULL DEFAULT 0"
+    );
+  } catch (error) {
+    // Ignore if column already exists.
+  }
+}
+
 export default async function handler(req, res) {
   const todoId = req.query?.id;
   if (!todoId) {
@@ -39,6 +49,7 @@ export default async function handler(req, res) {
 
 async function handlePatch(req, res, todoId) {
   try {
+    await ensurePrivateColumn();
     const body = await readJsonBody(req);
     const nextText =
       body.text !== undefined ? String(body.text || "").trim() : null;
@@ -47,7 +58,7 @@ async function handlePatch(req, res, todoId) {
     const actingUserId = String(body.actingUserId || "").trim();
 
     const existing = await execute(
-      "SELECT id, user_id FROM todos WHERE id = ? LIMIT 1",
+      "SELECT id, user_id, is_private FROM todos WHERE id = ? LIMIT 1",
       [todoId]
     );
 
@@ -64,9 +75,12 @@ async function handlePatch(req, res, todoId) {
         });
       }
       const canEdit =
-        actingUserId === ownerId ||
-        (await isAdminUserId(actingUserId));
-      if (!actingUserId || !canEdit) {
+        actingUserId === ownerId || (await isAdminUserId(actingUserId));
+      if (
+        !actingUserId ||
+        !canEdit ||
+        (existing.rows[0].is_private && actingUserId !== ownerId)
+      ) {
         return sendJson(res, 403, {
           error: "Puoi modificare solo le tue attività."
         });
@@ -92,6 +106,7 @@ async function handlePatch(req, res, todoId) {
          t.text,
          t.user_id,
          t.status,
+         t.is_private,
          u.username AS created_by
        FROM todos t
        JOIN users u ON u.id = t.user_id
@@ -112,11 +127,12 @@ async function handlePatch(req, res, todoId) {
 
 async function handleDelete(req, res, todoId) {
   try {
+    await ensurePrivateColumn();
     const body = await readJsonBody(req);
     const actingUserId = String(body.actingUserId || "").trim();
 
     const existing = await execute(
-      "SELECT id, user_id FROM todos WHERE id = ? LIMIT 1",
+      "SELECT id, user_id, is_private FROM todos WHERE id = ? LIMIT 1",
       [todoId]
     );
 
@@ -127,7 +143,12 @@ async function handleDelete(req, res, todoId) {
     const canDelete =
       actingUserId === String(existing.rows[0].user_id) ||
       (await isAdminUserId(actingUserId));
-    if (!actingUserId || !canDelete) {
+    if (
+      !actingUserId ||
+      !canDelete ||
+      (existing.rows[0].is_private &&
+        actingUserId !== String(existing.rows[0].user_id))
+    ) {
       return sendJson(res, 403, {
         error: "Puoi cancellare solo le tue attività."
       });

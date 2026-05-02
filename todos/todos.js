@@ -22,15 +22,13 @@ const addTodoBtn = document.getElementById("addTodoBtn");
 const installBtn = document.getElementById("installBtn");
 const userMenuBtn = document.getElementById("userMenuBtn");
 const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
-const ADMIN_DISPLAY_NAME = "Paolo Giorsetti";
-const isAdminUser =
-  (user.username && user.username.toLowerCase() === ADMIN_EMAIL) ||
-  user.name === ADMIN_DISPLAY_NAME;
+const isAdminUser = user.username?.toLowerCase() === ADMIN_EMAIL;
 const userMenu = document.getElementById("userMenu");
 const logoutBtn = document.getElementById("logoutBtn");
 const todoFormOverlay = document.getElementById("todoFormOverlay");
 const todoForm = document.getElementById("todoForm");
 const todoText = document.getElementById("todoText");
+const todoPrivate = document.getElementById("todoPrivate");
 const todoIdField = document.getElementById("todoId");
 const modalTitle = document.getElementById("modalTitle");
 
@@ -140,10 +138,11 @@ todoForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  const isPrivate = todoPrivate.checked;
   if (taskId) {
-    await updateTodo(taskId, taskText, user.id);
+    await updateTodo(taskId, taskText, user.id, isPrivate);
   } else {
-    await addTodo(taskText, user.id, user.name);
+    await addTodo(taskText, user.id, isPrivate);
   }
 
   closeForm();
@@ -151,7 +150,7 @@ todoForm.addEventListener("submit", async (event) => {
 });
 
 async function loadTodos() {
-  currentTodos = await getTodos();
+  currentTodos = await getTodos(user.id);
   renderTodos(currentTodos);
 }
 
@@ -194,7 +193,9 @@ function createTodoRow(item) {
       <span class="todo-owner">${item.createdBy}</span>
     </div>
     <div class="todo-body">
-      <span class="todo-text" title="Clicca per modificare">${item.text}</span>
+      <span class="todo-text" title="Clicca per modificare">
+        ${item.text}${item.isPrivate ? ' <span class="private-badge">🔒 Privato</span>' : ""}
+      </span>
       <span class="todo-actions">
         <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
         <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
@@ -225,6 +226,7 @@ function createTodoRow(item) {
 function openForm() {
   todoIdField.value = "";
   todoText.value = "";
+  todoPrivate.checked = false;
   modalTitle.textContent = "Aggiungi nuova attività";
   todoFormOverlay.classList.remove("hidden");
   todoText.focus();
@@ -237,6 +239,7 @@ function openEditForm(item) {
   }
   todoIdField.value = item.id;
   todoText.value = item.text;
+  todoPrivate.checked = item.isPrivate === true;
   modalTitle.textContent = "Modifica attività";
   todoFormOverlay.classList.remove("hidden");
   todoText.focus();
@@ -246,6 +249,7 @@ function closeForm() {
   todoFormOverlay.classList.add("hidden");
   todoIdField.value = "";
   todoText.value = "";
+  todoPrivate.checked = false;
 }
 
 window.addEventListener("load", () => {
