@@ -21,6 +21,8 @@ const todosContainer = document.getElementById("todosContainer");
 const addTodoBtn = document.getElementById("addTodoBtn");
 const installBtn = document.getElementById("installBtn");
 const userMenuBtn = document.getElementById("userMenuBtn");
+const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
+const isAdminUser = user.username?.toLowerCase() === ADMIN_EMAIL;
 const userMenu = document.getElementById("userMenu");
 const logoutBtn = document.getElementById("logoutBtn");
 const todoFormOverlay = document.getElementById("todoFormOverlay");
@@ -201,7 +203,7 @@ function createTodoRow(item) {
     .querySelector(".todo-text")
     .addEventListener("click", () => openEditForm(item));
   row.querySelector(".delete-btn").addEventListener("click", async () => {
-    if (item.userId !== user.id) {
+    if (item.userId !== user.id && !isAdminUser) {
       alert("Puoi cancellare solo le tue attività.");
       return;
     }
@@ -226,7 +228,7 @@ function openForm() {
 }
 
 function openEditForm(item) {
-  if (item.userId !== user.id) {
+  if (item.userId !== user.id && !isAdminUser) {
     alert("Puoi modificare solo le tue attività.");
     return;
   }

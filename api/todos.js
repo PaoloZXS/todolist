@@ -25,7 +25,10 @@ async function handleGet(_req, res) {
          t.text,
          t.user_id,
          t.status,
-         u.username AS created_by
+         CASE
+           WHEN u.username = 'paolo.giorsetti@codarini.com' THEN 'Paolo Giorsetti'
+           ELSE u.username
+         END AS created_by
        FROM todos t
        JOIN users u ON u.id = t.user_id
        ORDER BY CASE WHEN t.status = 'DA FARE' THEN 0 ELSE 1 END, datetime(t.created_at) DESC`

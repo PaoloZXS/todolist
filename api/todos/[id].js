@@ -6,6 +6,20 @@ import {
   sendJson
 } from "../_helpers.js";
 
+const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
+
+async function isAdminUserId(userId) {
+  if (!userId) return false;
+  const result = await execute(
+    "SELECT username FROM users WHERE id = ? LIMIT 1",
+    [userId]
+  );
+  return (
+    result.rows.length > 0 &&
+    String(result.rows[0].username).toLowerCase() === ADMIN_EMAIL
+  );
+}
+
 export default async function handler(req, res) {
   const todoId = req.query?.id;
   if (!todoId) {
@@ -49,7 +63,10 @@ async function handlePatch(req, res, todoId) {
           error: "La descrizione non può essere vuota."
         });
       }
-      if (!actingUserId || actingUserId !== ownerId) {
+      const canEdit =
+        actingUserId === ownerId ||
+        (await isAdminUserId(actingUserId));
+      if (!actingUserId || !canEdit) {
         return sendJson(res, 403, {
           error: "Puoi modificare solo le tue attività."
         });
@@ -107,7 +124,10 @@ async function handleDelete(req, res, todoId) {
       return sendJson(res, 404, { error: "Attività non trovata." });
     }
 
-    if (!actingUserId || String(existing.rows[0].user_id) !== actingUserId) {
+    const canDelete =
+      actingUserId === String(existing.rows[0].user_id) ||
+      (await isAdminUserId(actingUserId));
+    if (!actingUserId || !canDelete) {
       return sendJson(res, 403, {
         error: "Puoi cancellare solo le tue attività."
       });

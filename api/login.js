@@ -2,8 +2,22 @@ import crypto from "node:crypto";
 import { execute } from "./_db.js";
 import { methodNotAllowed, readJsonBody, sendJson } from "./_helpers.js";
 
+const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
+const ADMIN_DISPLAY_NAME = "Paolo Giorsetti";
+
 function hashPassword(password) {
   return crypto.createHash("sha256").update(password).digest("hex");
+}
+
+function formatUserResponse(user) {
+  return {
+    id: String(user.id),
+    username: String(user.username),
+    name:
+      String(user.username).toLowerCase() === ADMIN_EMAIL
+        ? ADMIN_DISPLAY_NAME
+        : String(user.username)
+  };
 }
 
 export default async function handler(req, res) {
@@ -34,10 +48,10 @@ export default async function handler(req, res) {
       );
 
       return sendJson(res, 200, {
-        user: {
-          id: String(insertResult.lastInsertRowid),
-          name: username
-        }
+        user: formatUserResponse({
+          id: insertResult.lastInsertRowid,
+          username
+        })
       });
     }
 
@@ -47,10 +61,10 @@ export default async function handler(req, res) {
     }
 
     return sendJson(res, 200, {
-      user: {
-        id: String(existing.id),
-        name: existing.username
-      }
+      user: formatUserResponse({
+        id: existing.id,
+        username: existing.username
+      })
     });
   } catch (error) {
     console.error(error);
