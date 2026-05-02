@@ -88,6 +88,8 @@ async function handlePatch(req, res, todoId) {
     const existingUsername = String(existingRow.username || "Utente");
     const existingPrivate = existingRow.is_private === 1;
 
+    const willPublish = existingPrivate && nextPrivate === false;
+
     if (nextText !== null) {
       if (!nextText) {
         return sendJson(res, 400, {
@@ -110,7 +112,7 @@ async function handlePatch(req, res, todoId) {
         todoId
       ]);
 
-      if (!existingPrivate && existingGroup) {
+      if (!existingPrivate && existingGroup && !willPublish) {
         const message = `${existingUsername} ha aggiornato un'attività.`;
         sendPushNotificationToGroup(
           existingGroup,
@@ -157,6 +159,16 @@ async function handlePatch(req, res, todoId) {
         nextPrivate ? 1 : 0,
         todoId
       ]);
+
+      if (willPublish && existingGroup) {
+        const message = `${existingUsername} ha reso pubblica un'attività.`;
+        sendPushNotificationToGroup(
+          existingGroup,
+          sourceEndpoint,
+          "Attività pubblicata in GeoList",
+          message
+        ).catch((error) => console.error("Errore invio push:", error));
+      }
     }
 
     const updated = await execute(

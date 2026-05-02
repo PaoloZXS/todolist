@@ -26,6 +26,9 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 export async function getCurrentPushSubscriptionEndpoint() {
   try {
     const registration = await navigator.serviceWorker.ready;
@@ -48,7 +51,11 @@ function updatePushButtonState(
   button.classList.toggle("button-secondary", !active);
   const status = document.getElementById("pushStatus");
   if (status) {
-    status.textContent = statusText || "";
+    if (typeof statusText === "string" && statusText.includes("<br/>")) {
+      status.innerHTML = statusText;
+    } else {
+      status.textContent = statusText || "";
+    }
   }
 }
 
@@ -124,12 +131,10 @@ export async function initPushNotifications(user) {
       });
 
       await savePushSubscription(user.id, user.groupName || "", subscription);
-      updatePushButtonState(
-        pushButton,
-        "Notifiche attivate. Riceverai aggiornamenti di gruppo.",
-        true,
-        true
-      );
+      const successText = isMobile
+        ? "Notifiche attivate.<br/>Riceverai aggiornamenti di gruppo."
+        : "Notifiche attivate. Riceverai aggiornamenti di gruppo.";
+      updatePushButtonState(pushButton, successText, true, true);
     } catch (error) {
       console.error("Push subscription failed:", error);
       updatePushButtonState(

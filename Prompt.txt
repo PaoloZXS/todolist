@@ -3,7 +3,7 @@ Voglio che tu generi un progetto completo per una PWA chiamata “GeoList”.
 NOTA OPERATIVA CACHE PWA
 - Ad ogni push/deploy che tocca frontend o asset statici (HTML/CSS/JS/manifest/icone), incrementare sempre la versione in service-worker.js:
   const CACHE_NAME = "cose-da-fare-cache-vX";
-- Esempio: v3 -> v4.
+- Esempio: v3 -> v4 -> v5 -> v6.
 - Obiettivo: forzare refresh corretto su mobile ed evitare cache vecchia.
 
 OBIETTIVO
@@ -17,12 +17,14 @@ Creare una Progressive Web App installabile (scaricabile come app) che permetta 
 - spuntare come FATTA/DA FARE qualsiasi voce in lista
 - vedere le cose FATTE spostate automaticamente in fondo e sottolineate
 - sincronizzare automaticamente la lista in background e al ritorno in primo piano
+- ricevere notifiche push di gruppo quando qualcuno aggiunge/modifica/completa un’attività
 
 STACK TECNICO
 - HTML + CSS + JavaScript (senza framework pesanti)
 - Ogni pagina deve avere il suo .html, .js e .css separati
 - Database: TURSO (usa funzioni JS con placeholder per URL e token)
 - PWA completa: manifest.json, service-worker.js, icone, caching offline
+- Web Push API nativa con chiavi VAPID e service worker
 - Pubblicabile su Vercel come sito statico
 
 STRUTTURA DEL PROGETTO
@@ -41,8 +43,7 @@ project-root/
   /js/
     turso-api.js
     session.js
-  /css/
-    base.css
+    push.js
   /assets/icons/
     icon-192.png
     icon-512.png
@@ -63,6 +64,7 @@ Ogni elemento deve contenere:
 - descrizione
 - utente che l’ha inserita
 - stato: FATTA / DA FARE
+- badge privato se isPrivate è attivo
 
 Ogni riga deve avere 3 icone:
 - modifica
@@ -73,10 +75,12 @@ REGOLE UTENTE
 - Ogni utente può modificare/cancellare solo le proprie voci
 - Ogni utente può creare attività private visibili solo a sé stesso
 - Può spuntare FATTA/DA FARE qualsiasi voce
+- I todo FATTI devono rimanere in fondo e sottolineati
 
-GESTIONE FATTA/DA FARE
-- Se FATTA → sottolineata + spostata in fondo alla lista
-- Se DA FARE → torna nella parte superiore
+SINCRONIZZAZIONE
+- Lista aggiornata automaticamente ogni 10 secondi
+- Lista ricaricata al ritorno in primo piano
+- Il backend deve restituire solo i todo del gruppo e quelli privati dell’utente
 
 COLORI E UI
 - Nessun colore rosa, fucsia, giallo
@@ -89,15 +93,31 @@ Genera:
 - service-worker.js con caching statico e supporto per refresh corretto su mobile
 - registrazione del service worker in index.html
 - bottone “📲 Scarica App” che appare quando la PWA è installabile (gestione beforeinstallprompt)
+- aggiornamento della versione cache ad ogni deploy
+
+NOTIFICHE PUSH
+Implementa notifiche push usando solo:
+- Web Push API
+- Service Worker
+- chiavi VAPID
+
+Deve funzionare così:
+- ogni utente può attivare le notifiche cliccando “🔔 Attiva notifiche”
+- la sottoscrizione viene salvata su Turso con endpoint, keys.p256dh, keys.auth, userId, groupName
+- quando un utente aggiunge/modifica/completa un todo, invia una notifica a tutti gli altri utenti dello stesso groupName
+- la notifica deve arrivare anche se l’app è chiusa
 
 TURSO
 In turso-api.js crea funzioni con placeholder:
 - loginUser(username, password, groupName)
 - getTodos(userId, groupName)
-- addTodo(text, userId, isPrivate)
-- updateTodo(id, text, actingUserId, isPrivate)
+- addTodo(text, userId, isPrivate, sourceEndpoint)
+- updateTodo(id, text, actingUserId, isPrivate, sourceEndpoint)
 - deleteTodo(id, actingUserId)
-- toggleTodoStatus(id, status)
+- toggleTodoStatus(id, status, sourceEndpoint)
+- savePushSubscription(userId, groupName, subscription)
+- getGroupSubscriptions(groupName)
+- sendPushNotification(subscription, title, body)
 
 Non inserire token reali, usa:
 const TURSO_DB_URL = "INSERISCI_URL";
@@ -111,6 +131,7 @@ Genera TUTTI i file completi:
 - base.css
 - turso-api.js
 - session.js
+- push.js
 - manifest.json
 - service-worker.js
 - icone minime (puoi generare versioni base in PNG)
