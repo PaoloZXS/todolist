@@ -34,6 +34,9 @@ const modalTitle = document.getElementById("modalTitle");
 
 let deferredPrompt = null;
 let currentTodos = [];
+const AUTO_REFRESH_MS = 10000;
+let todoRefreshTimer = null;
+let isTodosRefreshing = false;
 
 function getInstallHint() {
   const ua = navigator.userAgent.toLowerCase();
@@ -150,8 +153,27 @@ todoForm.addEventListener("submit", async (event) => {
 });
 
 async function loadTodos() {
-  currentTodos = await getTodos(user.id, user.groupName || "");
-  renderTodos(currentTodos);
+  if (isTodosRefreshing) {
+    return;
+  }
+  if (!todoFormOverlay.classList.contains("hidden")) {
+    return;
+  }
+
+  isTodosRefreshing = true;
+  try {
+    currentTodos = await getTodos(user.id, user.groupName || "");
+    renderTodos(currentTodos);
+  } finally {
+    isTodosRefreshing = false;
+  }
+}
+
+function startAutoRefresh() {
+  if (todoRefreshTimer) return;
+  todoRefreshTimer = setInterval(async () => {
+    await loadTodos();
+  }, AUTO_REFRESH_MS);
 }
 
 function renderTodos(todos) {
@@ -252,6 +274,11 @@ function closeForm() {
   todoPrivate.checked = false;
 }
 
-window.addEventListener("load", () => {
+window.addEventListener("focus", () => {
   loadTodos();
+});
+
+window.addEventListener("load", async () => {
+  await loadTodos();
+  startAutoRefresh();
 });
