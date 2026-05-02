@@ -244,23 +244,25 @@ function createTodoRow(item) {
     <div class="todo-meta">
       <span class="todo-date">${item.createdAt}</span>
     </div>
-    <div class="todo-content">
-      <div class="todo-title" title="Clicca per modificare">
-        ${item.text}${item.isPrivate ? ' <span class="private-badge">🔒 Privato</span>' : ""}
+    <div class="todo-body">
+      <div class="todo-content">
+        <div class="todo-title" title="Clicca per modificare">
+          ${item.text}${item.isPrivate ? ' <span class="private-badge">🔒 Privato</span>' : ""}
+        </div>
+        <div class="todo-created">Inserito da: ${item.createdBy}</div>
+        ${
+          item.updatedBy && item.updatedBy !== item.createdBy
+            ? `
+        <div class="todo-updated">Ultima modifica: ${item.updatedBy}</div>
+        `
+            : ""
+        }
       </div>
-      <div class="todo-created">Inserito da: ${item.createdBy}</div>
-      ${
-        item.updatedBy && item.updatedBy !== item.createdBy
-          ? `
-      <div class="todo-updated">Ultima modifica: ${item.updatedBy}</div>
-      `
-          : ""
-      }
+      <div class="todo-actions">
+        <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
+        <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
+      </div>
     </div>
-    <span class="todo-actions">
-      <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
-      <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
-    </span>
   `;
 
   const todoTitleElement = row.querySelector(".todo-title");
