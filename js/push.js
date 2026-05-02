@@ -26,7 +26,15 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
-
+export async function getCurrentPushSubscriptionEndpoint() {
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.getSubscription();
+    return subscription?.endpoint || "";
+  } catch {
+    return "";
+  }
+}
 function updatePushButtonState(
   button,
   statusText,

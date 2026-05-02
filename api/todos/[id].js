@@ -63,6 +63,7 @@ async function handlePatch(req, res, todoId) {
           body.isPrivate === "true"
         : null;
     const actingUserId = String(body.actingUserId || "").trim();
+    const sourceEndpoint = String(body.sourceEndpoint || "").trim();
 
     const existing = await execute(
       `SELECT
@@ -113,7 +114,7 @@ async function handlePatch(req, res, todoId) {
         const message = `${existingUsername} ha aggiornato un'attività.`;
         sendPushNotificationToGroup(
           existingGroup,
-          actingUserId,
+          sourceEndpoint,
           "Attività aggiornata in GeoList",
           message
         ).catch((error) => console.error("Errore invio push:", error));
@@ -133,7 +134,7 @@ async function handlePatch(req, res, todoId) {
         const message = `${existingUsername} ha segnato un'attività come ${statusText}.`;
         sendPushNotificationToGroup(
           existingGroup,
-          actingUserId,
+          sourceEndpoint,
           "Aggiornamento attività GeoList",
           message
         ).catch((error) => console.error("Errore invio push:", error));

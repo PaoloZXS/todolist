@@ -82,7 +82,7 @@ export async function sendPushNotification(subscription, title, body) {
 
 export async function sendPushNotificationToGroup(
   groupName,
-  excludeUserId,
+  excludeEndpoint,
   title,
   body
 ) {
@@ -92,8 +92,7 @@ export async function sendPushNotificationToGroup(
   const sendPromises = subscriptions
     .filter(
       (subscription) =>
-        subscription.endpoint &&
-        String(subscription.userId) !== String(excludeUserId)
+        subscription.endpoint && subscription.endpoint !== excludeEndpoint
     )
     .map((subscription) =>
       sendPushNotification(subscription, title, body).catch((error) => {

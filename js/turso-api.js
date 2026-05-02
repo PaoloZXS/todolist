@@ -39,22 +39,39 @@ export async function getTodos(userId = "", groupName = "") {
   return payload.todos || [];
 }
 
-export async function addTodo(text, userId, isPrivate = false) {
+export async function addTodo(
+  text,
+  userId,
+  isPrivate = false,
+  sourceEndpoint = ""
+) {
   if (!text || !text.trim()) {
     throw new Error("La descrizione non può essere vuota.");
   }
 
   const payload = await apiRequest("/api/todos", {
     method: "POST",
-    body: JSON.stringify({ text: text.trim(), userId, isPrivate })
+    body: JSON.stringify({
+      text: text.trim(),
+      userId,
+      isPrivate,
+      sourceEndpoint
+    })
   });
 
   return payload.todo;
 }
 
-export async function updateTodo(id, text, actingUserId, isPrivate) {
+export async function updateTodo(
+  id,
+  text,
+  actingUserId,
+  isPrivate,
+  sourceEndpoint = ""
+) {
   const body = { text: text.trim(), actingUserId };
   if (isPrivate !== undefined) body.isPrivate = Boolean(isPrivate);
+  if (sourceEndpoint) body.sourceEndpoint = sourceEndpoint;
 
   const payload = await apiRequest(`/api/todos/${id}`, {
     method: "PATCH",
@@ -72,10 +89,13 @@ export async function deleteTodo(id, actingUserId) {
   return true;
 }
 
-export async function toggleTodoStatus(id, status) {
+export async function toggleTodoStatus(id, status, sourceEndpoint = "") {
+  const body = { status };
+  if (sourceEndpoint) body.sourceEndpoint = sourceEndpoint;
+
   const payload = await apiRequest(`/api/todos/${id}`, {
     method: "PATCH",
-    body: JSON.stringify({ status })
+    body: JSON.stringify(body)
   });
 
   return payload.todo;

@@ -6,7 +6,10 @@ import {
   deleteTodo,
   toggleTodoStatus
 } from "../js/turso-api.js";
-import { initPushNotifications } from "../js/push.js";
+import {
+  initPushNotifications,
+  getCurrentPushSubscriptionEndpoint
+} from "../js/push.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js").catch(console.error);
@@ -146,10 +149,11 @@ todoForm.addEventListener("submit", async (event) => {
   }
 
   const isPrivate = todoPrivate.checked;
+  const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
   if (taskId) {
-    await updateTodo(taskId, taskText, user.id, isPrivate);
+    await updateTodo(taskId, taskText, user.id, isPrivate, sourceEndpoint);
   } else {
-    await addTodo(taskText, user.id, isPrivate);
+    await addTodo(taskText, user.id, isPrivate, sourceEndpoint);
   }
 
   closeForm();
@@ -242,7 +246,8 @@ function createTodoRow(item) {
   });
   row.querySelector(".toggle-btn").addEventListener("click", async () => {
     const newStatus = item.status === "FATTA" ? "DA FARE" : "FATTA";
-    await toggleTodoStatus(item.id, newStatus);
+    const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
+    await toggleTodoStatus(item.id, newStatus, sourceEndpoint);
     await loadTodos();
   });
 
@@ -281,6 +286,16 @@ function closeForm() {
 window.addEventListener("focus", () => {
   loadTodos();
 });
+
+async function getCurrentPushSubscriptionEndpoint() {
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.getSubscription();
+    return subscription?.endpoint || "";
+  } catch {
+    return "";
+  }
+}
 
 window.addEventListener("load", async () => {
   await loadTodos();

@@ -108,6 +108,8 @@ async function handlePost(req, res) {
     const currentUsername = String(currentUser.username || "Utente");
     const currentGroup = String(currentUser.group_name || "").trim();
 
+    const sourceEndpoint = String(body.sourceEndpoint || "").trim();
+
     const insertResult = await execute(
       "INSERT INTO todos (user_id, text, status, is_private) VALUES (?, ?, 'DA FARE', ?)",
       [userId, text, isPrivate ? 1 : 0]
@@ -131,7 +133,7 @@ async function handlePost(req, res) {
     if (!isPrivate && currentGroup) {
       sendPushNotificationToGroup(
         currentGroup,
-        userId,
+        sourceEndpoint,
         "Nuova attività GeoList",
         `${currentUsername} ha aggiunto: ${text}`
       ).catch((error) => console.error("Errore invio push:", error));
