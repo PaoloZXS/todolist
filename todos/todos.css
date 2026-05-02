@@ -123,8 +123,14 @@
   flex-direction: column;
   gap: 6px;
   align-items: flex-start;
+  justify-items: start;
   text-align: left;
   width: 100%;
+}
+
+.todo-content > div {
+  width: 100%;
+  text-align: left;
 }
 
 .todo-actions {
