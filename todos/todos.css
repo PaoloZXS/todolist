@@ -130,6 +130,11 @@
   font-weight: 500;
 }
 
+.todo-date {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .todo-owner {
   color: var(--muted);
 }
@@ -216,34 +221,106 @@
 
 @media (max-width: 740px) {
   .todo-row {
-    grid-template-columns: 1.1fr 2.8fr 1.3fr 1.4fr;
+    grid-template-columns: 1fr 3fr 1.2fr 1.6fr;
+    gap: 10px;
+    padding: 14px 12px;
   }
 }
 
-@media (max-width: 620px) {
-  .todo-row,
-  .header-row,
-  .actions-row,
-  .card-actions {
-    flex-direction: column;
-    display: flex;
-    align-items: stretch;
-  }
+@media (max-width: 560px) {
+  /* Ogni todo diventa una card su mobile */
   .todo-row {
-    grid-template-columns: 1fr;
-    border-radius: 20px;
-    padding: 18px;
-    margin-bottom: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 6px;
   }
+
   .todo-row.header {
     display: none;
   }
+
+  /* Data piccola sopra */
+  .todo-date {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* Testo principale prominente */
+  .todo-text {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Utente piccolo sotto il testo */
+  .todo-owner {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* Bottoni azioni: piccoli e in fila orizzontale */
   .todo-actions {
     justify-content: flex-start;
-    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .todo-actions button {
+    width: 42px;
+    height: 42px;
+    font-size: 17px;
+  }
+
+  /* Header con saluto e menu */
+  .todo-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
     gap: 8px;
   }
-  .todo-actions button {
+
+  .todo-header .eyebrow {
+    display: none;
+  }
+
+  .todo-header h1 {
+    display: none;
+  }
+
+  /* Pulsante aggiungi full width, install secondario */
+  .card-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-actions .button-primary {
     width: 100%;
+    justify-content: center;
+  }
+
+  .card-actions .button-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Modal form su mobile */
+  .modal {
+    padding: 20px 16px;
+    border-radius: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .form-actions .button {
+    width: 100%;
+    justify-content: center;
   }
 }

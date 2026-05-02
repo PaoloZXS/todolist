@@ -174,10 +174,32 @@ a {
   body.app-shell,
   body.login-shell,
   body.todos-shell {
-    padding: 16px;
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 20px;
   }
   .card {
     border-radius: 20px;
-    padding: 22px;
+    padding: 18px 16px;
+  }
+  .card-compact {
+    padding: 16px;
+  }
+  .button {
+    padding: 13px 16px;
+    font-size: 0.95rem;
+  }
+  .actions-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .actions-row .button,
+  .actions-row a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  .page-title {
+    font-size: 1.5rem;
   }
 }

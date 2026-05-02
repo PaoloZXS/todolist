@@ -176,7 +176,7 @@ function createTodoRow(item) {
   const row = document.createElement("div");
   row.className = `todo-row${item.status === "FATTA" ? " done" : ""}`;
   row.innerHTML = `
-    <span>${item.createdAt}</span>
+    <span class="todo-date">${item.createdAt}</span>
     <span class="todo-text">${item.text}</span>
     <span class="todo-owner">${item.createdBy}</span>
     <span class="todo-actions">
