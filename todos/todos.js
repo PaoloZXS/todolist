@@ -148,16 +148,25 @@ todoForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  const isPrivate = todoPrivate.checked;
-  const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
-  if (taskId) {
-    await updateTodo(taskId, taskText, user.id, isPrivate, sourceEndpoint);
-  } else {
-    await addTodo(taskText, user.id, isPrivate, sourceEndpoint);
-  }
+  try {
+    const isPrivate = todoPrivate.checked;
+    const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
+    if (taskId) {
+      await updateTodo(taskId, taskText, user.id, isPrivate, sourceEndpoint);
+    } else {
+      await addTodo(taskText, user.id, isPrivate, sourceEndpoint);
+    }
 
-  closeForm();
-  await loadTodos();
+    closeForm();
+    await loadTodos();
+  } catch (error) {
+    console.error("Errore salvataggio attività:", error);
+    alert(
+      `Errore durante il salvataggio. Controlla i log della console: ${
+        error.message || error
+      }`
+    );
+  }
 });
 
 async function loadTodos() {
@@ -286,16 +295,6 @@ function closeForm() {
 window.addEventListener("focus", () => {
   loadTodos();
 });
-
-async function getCurrentPushSubscriptionEndpoint() {
-  try {
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
-    return subscription?.endpoint || "";
-  } catch {
-    return "";
-  }
-}
 
 window.addEventListener("load", async () => {
   await loadTodos();
