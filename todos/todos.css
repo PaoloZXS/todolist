@@ -135,7 +135,9 @@
 
 .todo-title,
 .todo-created,
-.todo-updated {
+.todo-updated,
+.todo-content,
+.todo-meta {
   width: 100%;
   text-align: left !important;
 }
