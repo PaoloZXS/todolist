@@ -1,6 +1,6 @@
 // IMPORTANTE: incrementare la versione (v3 -> v4 -> v5...) a ogni push/deploy
 // che modifica HTML/CSS/JS/manifest/icone, per forzare refresh corretto su mobile.
-const CACHE_NAME = "cose-da-fare-cache-v4";
+const CACHE_NAME = "cose-da-fare-cache-v5";
 const ASSETS = [
   "/",
   "/index.html",
@@ -38,10 +38,43 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+function isNetworkFirst(request) {
+  return (
+    request.mode === "navigate" ||
+    request.destination === "document" ||
+    request.destination === "script" ||
+    request.destination === "style" ||
+    request.url.endsWith(".html") ||
+    request.url.endsWith(".js") ||
+    request.url.endsWith(".css") ||
+    request.url.endsWith("/manifest.json")
+  );
+}
+
 self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url);
   if (requestUrl.pathname.startsWith("/api/")) {
     event.respondWith(fetch(event.request));
+    return;
+  }
+
+  if (isNetworkFirst(event.request)) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            if (event.request.method === "GET") {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          });
+        })
+        .catch(() =>
+          caches.match(event.request).then((cacheResponse) => {
+            return cacheResponse || caches.match("/index.html");
+          })
+        )
+    );
     return;
   }
 
