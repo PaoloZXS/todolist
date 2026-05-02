@@ -76,11 +76,19 @@ export default async function handler(req, res) {
       return sendJson(res, 401, { error: "Password non corretta." });
     }
 
-    if (existing.group_name && groupName && existing.group_name !== groupName) {
+    if (existing.group_name && existing.group_name !== groupName) {
       return sendJson(res, 401, {
         error:
           "Gruppo non corrispondente. Inserisci l'Azienda/Famiglia corretta."
       });
+    }
+
+    if (!existing.group_name) {
+      await execute(
+        "UPDATE users SET group_name = ? WHERE id = ?",
+        [groupName, existing.id]
+      );
+      existing.group_name = groupName;
     }
 
     return sendJson(res, 200, {
