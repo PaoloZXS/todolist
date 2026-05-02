@@ -11,8 +11,10 @@ CREATE TABLE IF NOT EXISTS todos (
   text TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'DA FARE' CHECK (status IN ('DA FARE', 'FATTA')),
   is_private INTEGER NOT NULL DEFAULT 0,
+  updated_by INTEGER,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (updated_by) REFERENCES users(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_todos_status_created_at ON todos(status, created_at DESC);

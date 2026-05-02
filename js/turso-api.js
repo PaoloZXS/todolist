@@ -89,8 +89,14 @@ export async function deleteTodo(id, actingUserId) {
   return true;
 }
 
-export async function toggleTodoStatus(id, status, sourceEndpoint = "") {
+export async function toggleTodoStatus(
+  id,
+  status,
+  actingUserId = "",
+  sourceEndpoint = ""
+) {
   const body = { status };
+  if (actingUserId) body.actingUserId = actingUserId;
   if (sourceEndpoint) body.sourceEndpoint = sourceEndpoint;
 
   const payload = await apiRequest(`/api/todos/${id}`, {

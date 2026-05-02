@@ -17,6 +17,14 @@ async function ensurePrivateColumn() {
   }
 }
 
+async function ensureUpdatedByColumn() {
+  try {
+    await execute("ALTER TABLE todos ADD COLUMN updated_by INTEGER");
+  } catch (error) {
+    // Ignore if column already exists or the DB provider does not support it.
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method === "GET") {
     return handleGet(req, res);
@@ -29,6 +37,7 @@ export default async function handler(req, res) {
 
 async function handleGet(_req, res) {
   await ensurePrivateColumn();
+  await ensureUpdatedByColumn();
   try {
     const currentUserId = String(_req.query?.userId || "").trim();
     const currentGroupName = String(_req.query?.groupName || "").trim();
@@ -56,9 +65,11 @@ async function handleGet(_req, res) {
          CASE
            WHEN u.username = 'paolo.giorsetti@codarini.com' THEN 'Paolo Giorsetti'
            ELSE u.username
-         END AS created_by
+         END AS created_by,
+         u2.username AS updated_by
        FROM todos t
        JOIN users u ON u.id = t.user_id
+       LEFT JOIN users u2 ON u2.id = t.updated_by
        ${visibilityFilter}
        ORDER BY CASE WHEN t.status = 'DA FARE' THEN 0 ELSE 1 END, datetime(t.created_at) DESC`,
       queryArgs

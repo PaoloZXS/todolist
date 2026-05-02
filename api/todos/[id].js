@@ -31,6 +31,14 @@ async function ensurePrivateColumn() {
   }
 }
 
+async function ensureUpdatedByColumn() {
+  try {
+    await execute("ALTER TABLE todos ADD COLUMN updated_by INTEGER");
+  } catch (error) {
+    // Ignore if column already exists.
+  }
+}
+
 export default async function handler(req, res) {
   const todoId = req.query?.id;
   if (!todoId) {
@@ -51,6 +59,7 @@ export default async function handler(req, res) {
 async function handlePatch(req, res, todoId) {
   try {
     await ensurePrivateColumn();
+    await ensureUpdatedByColumn();
     const body = await readJsonBody(req);
     const nextText =
       body.text !== undefined ? String(body.text || "").trim() : null;
@@ -107,8 +116,9 @@ async function handlePatch(req, res, todoId) {
           error: "Puoi modificare solo le tue attività."
         });
       }
-      await execute("UPDATE todos SET text = ? WHERE id = ?", [
+      await execute("UPDATE todos SET text = ?, updated_by = ? WHERE id = ?", [
         nextText,
+        actingUserId || null,
         todoId
       ]);
 
@@ -125,10 +135,10 @@ async function handlePatch(req, res, todoId) {
 
     if (nextStatus !== null) {
       const normalizedStatus = nextStatus === "FATTA" ? "FATTA" : "DA FARE";
-      await execute("UPDATE todos SET status = ? WHERE id = ?", [
-        normalizedStatus,
-        todoId
-      ]);
+      await execute(
+        "UPDATE todos SET status = ?, updated_by = ? WHERE id = ?",
+        [normalizedStatus, actingUserId || null, todoId]
+      );
 
       if (!existingPrivate && existingGroup) {
         const statusText =
@@ -155,10 +165,10 @@ async function handlePatch(req, res, todoId) {
           error: "Puoi modificare solo le tue attività."
         });
       }
-      await execute("UPDATE todos SET is_private = ? WHERE id = ?", [
-        nextPrivate ? 1 : 0,
-        todoId
-      ]);
+      await execute(
+        "UPDATE todos SET is_private = ?, updated_by = ? WHERE id = ?",
+        [nextPrivate ? 1 : 0, actingUserId || null, todoId]
+      );
 
       if (willPublish && existingGroup) {
         const message = `${existingUsername} ha reso pubblica un'attività.`;
@@ -179,9 +189,11 @@ async function handlePatch(req, res, todoId) {
          t.user_id,
          t.status,
          t.is_private,
-         u.username AS created_by
+         u.username AS created_by,
+         u2.username AS updated_by
        FROM todos t
        JOIN users u ON u.id = t.user_id
+       LEFT JOIN users u2 ON u2.id = t.updated_by
        WHERE t.id = ? LIMIT 1`,
       [todoId]
     );

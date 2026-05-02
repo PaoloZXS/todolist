@@ -33,6 +33,7 @@ export function mapTodoRow(row) {
     createdAt: formatDateToIt(row.created_at),
     text: row.text,
     createdBy: row.created_by,
+    updatedBy: row.updated_by || null,
     userId: String(row.user_id),
     status: row.status,
     isPrivate: Boolean(row.is_private)

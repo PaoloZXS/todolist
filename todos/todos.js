@@ -248,6 +248,15 @@ function createTodoRow(item) {
     <div class="todo-body">
       <span class="todo-text" title="Clicca per modificare">
         ${item.text}${item.isPrivate ? ' <span class="private-badge">🔒 Privato</span>' : ""}
+        ${
+          item.updatedBy && item.updatedBy !== item.createdBy
+            ? `
+          <span class="todo-note">
+            ${item.status === "FATTA" ? "Completata da" : "Segnata DA FARE da"}: ${item.updatedBy}
+          </span>
+        `
+            : ""
+        }
       </span>
       <span class="todo-actions">
         <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
@@ -273,7 +282,7 @@ function createTodoRow(item) {
   row.querySelector(".toggle-btn").addEventListener("click", async () => {
     const newStatus = item.status === "FATTA" ? "DA FARE" : "FATTA";
     const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
-    await toggleTodoStatus(item.id, newStatus, sourceEndpoint);
+    await toggleTodoStatus(item.id, newStatus, user.id, sourceEndpoint);
     await loadTodos();
   });
 
