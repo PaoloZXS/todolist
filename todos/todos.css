@@ -389,6 +389,10 @@
   }
 
   /* Riga 2 wrapper: testo sinistra + icone destra */
+  .todo-row {
+    position: relative;
+  }
+
   .todo-row .todo-body {
     display: flex !important;
     align-items: center;
@@ -402,6 +406,13 @@
     justify-content: flex-end;
     gap: 6px;
     flex-shrink: 0;
+    position: absolute;
+    top: 18px;
+    right: 14px;
+  }
+
+  .todo-content {
+    padding-right: 96px;
   }
 
   .todo-actions button {
