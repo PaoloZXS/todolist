@@ -401,14 +401,21 @@
   }
 
   /* Riga 2: descrizione + icone sulla stessa riga */
-  .todo-text {
+  .todo-title {
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.4;
     white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
-    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .todo-created,
+  .todo-updated {
+    font-size: 0.82rem;
+    color: var(--muted);
+    min-width: 0;
   }
 
   /* Riga 2 wrapper: testo sinistra + icone destra */
@@ -422,7 +429,7 @@
     justify-content: space-between;
     gap: 8px;
     width: 100%;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   /* Icone sulla destra della descrizione */
@@ -441,7 +448,8 @@
     padding-right: 0;
     gap: 4px;
     width: auto;
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .todo-actions button {
