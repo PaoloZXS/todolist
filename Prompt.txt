@@ -1,5 +1,11 @@
 Voglio che tu generi un progetto completo per una PWA chiamata “Cose da Fare”.
 
+NOTA OPERATIVA CACHE PWA
+- Ad ogni push/deploy che tocca frontend o asset statici (HTML/CSS/JS/manifest/icone), incrementare sempre la versione in service-worker.js:
+  const CACHE_NAME = "cose-da-fare-cache-vX";
+- Esempio: v3 -> v4.
+- Obiettivo: forzare refresh corretto su mobile ed evitare cache vecchia.
+
 OBIETTIVO
 Creare una Progressive Web App installabile (scaricabile come app) che permetta a più utenti di:
 - registrarsi o fare login
