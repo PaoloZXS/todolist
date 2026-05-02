@@ -254,7 +254,7 @@
 }
 
 .overlay #messageTitle.modal-title {
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.3;
   font-weight: 600;
   color: #ff4d4d;
