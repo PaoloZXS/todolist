@@ -11,6 +11,10 @@
   white-space: nowrap;
 }
 
+.card-actions {
+  margin-top: 18px;
+}
+
 .note-text {
   margin-top: 12px;
   color: #c6d4f0;
