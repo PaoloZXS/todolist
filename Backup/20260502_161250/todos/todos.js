@@ -6,7 +6,6 @@ import {
   deleteTodo,
   toggleTodoStatus
 } from "../js/turso-api.js";
-import { initPushNotifications } from "../js/push.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js").catch(console.error);
@@ -80,9 +79,6 @@ window.addEventListener("beforeinstallprompt", (event) => {
   console.log("[PWA] beforeinstallprompt RECEIVED ✅");
   event.preventDefault();
   deferredPrompt = event;
-  if (!isStandalone && !isMobile) {
-    installBtn.classList.remove("hidden");
-  }
 });
 
 installBtn.addEventListener("click", async () => {
@@ -284,6 +280,5 @@ window.addEventListener("focus", () => {
 
 window.addEventListener("load", async () => {
   await loadTodos();
-  await initPushNotifications(user);
   startAutoRefresh();
 });

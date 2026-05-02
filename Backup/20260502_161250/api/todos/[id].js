@@ -5,7 +5,6 @@ import {
   readJsonBody,
   sendJson
 } from "../_helpers.js";
-import { sendPushNotificationToGroup } from "../push-utils.js";
 
 const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
 
@@ -65,15 +64,7 @@ async function handlePatch(req, res, todoId) {
     const actingUserId = String(body.actingUserId || "").trim();
 
     const existing = await execute(
-      `SELECT
-         t.id,
-         t.user_id,
-         t.is_private,
-         u.username,
-         u.group_name
-       FROM todos t
-       JOIN users u ON u.id = t.user_id
-       WHERE t.id = ? LIMIT 1`,
+      "SELECT id, user_id, is_private FROM todos WHERE id = ? LIMIT 1",
       [todoId]
     );
 
@@ -81,11 +72,7 @@ async function handlePatch(req, res, todoId) {
       return sendJson(res, 404, { error: "Attività non trovata." });
     }
 
-    const existingRow = existing.rows[0];
-    const ownerId = String(existingRow.user_id);
-    const existingGroup = String(existingRow.group_name || "").trim();
-    const existingUsername = String(existingRow.username || "Utente");
-    const existingPrivate = existingRow.is_private === 1;
+    const ownerId = String(existing.rows[0].user_id);
 
     if (nextText !== null) {
       if (!nextText) {
@@ -98,7 +85,7 @@ async function handlePatch(req, res, todoId) {
       if (
         !actingUserId ||
         !canEdit ||
-        (existingPrivate && actingUserId !== ownerId)
+        (existing.rows[0].is_private && actingUserId !== ownerId)
       ) {
         return sendJson(res, 403, {
           error: "Puoi modificare solo le tue attività."
@@ -108,16 +95,6 @@ async function handlePatch(req, res, todoId) {
         nextText,
         todoId
       ]);
-
-      if (!existingPrivate && existingGroup) {
-        const message = `${existingUsername} ha aggiornato un'attività.`;
-        sendPushNotificationToGroup(
-          existingGroup,
-          actingUserId,
-          "Attività aggiornata in GeoList",
-          message
-        ).catch((error) => console.error("Errore invio push:", error));
-      }
     }
 
     if (nextStatus !== null) {
@@ -126,18 +103,6 @@ async function handlePatch(req, res, todoId) {
         normalizedStatus,
         todoId
       ]);
-
-      if (!existingPrivate && existingGroup) {
-        const statusText =
-          normalizedStatus === "FATTA" ? "completata" : "riattivata";
-        const message = `${existingUsername} ha segnato un'attività come ${statusText}.`;
-        sendPushNotificationToGroup(
-          existingGroup,
-          actingUserId,
-          "Aggiornamento attività GeoList",
-          message
-        ).catch((error) => console.error("Errore invio push:", error));
-      }
     }
 
     if (nextPrivate !== null) {

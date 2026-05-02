@@ -5,7 +5,6 @@ import {
   readJsonBody,
   sendJson
 } from "./_helpers.js";
-import { sendPushNotificationToGroup } from "./push-utils.js";
 
 async function ensurePrivateColumn() {
   try {
@@ -96,17 +95,13 @@ async function handlePost(req, res) {
     }
 
     const userExists = await execute(
-      "SELECT id, username, group_name FROM users WHERE id = ? LIMIT 1",
+      "SELECT id FROM users WHERE id = ? LIMIT 1",
       [userId]
     );
 
     if (!userExists.rows.length) {
       return sendJson(res, 404, { error: "Utente non trovato." });
     }
-
-    const currentUser = userExists.rows[0];
-    const currentUsername = String(currentUser.username || "Utente");
-    const currentGroup = String(currentUser.group_name || "").trim();
 
     const insertResult = await execute(
       "INSERT INTO todos (user_id, text, status, is_private) VALUES (?, ?, 'DA FARE', ?)",
@@ -127,15 +122,6 @@ async function handlePost(req, res) {
        WHERE t.id = ? LIMIT 1`,
       [insertResult.lastInsertRowid]
     );
-
-    if (!isPrivate && currentGroup) {
-      sendPushNotificationToGroup(
-        currentGroup,
-        userId,
-        "Nuova attività GeoList",
-        `${currentUsername} ha aggiunto: ${text}`
-      ).catch((error) => console.error("Errore invio push:", error));
-    }
 
     return sendJson(res, 201, {
       todo: mapTodoRow(created.rows[0])

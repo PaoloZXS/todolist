@@ -81,28 +81,6 @@ export async function toggleTodoStatus(id, status) {
   return payload.todo;
 }
 
-export async function savePushSubscription(userId, groupName, subscription) {
-  const payload = await apiRequest("/api/push-subscriptions", {
-    method: "POST",
-    body: JSON.stringify({ userId, groupName, subscription })
-  });
-  return payload;
-}
-
-export async function getGroupSubscriptions(groupName) {
-  const query = `/api/push-subscriptions?groupName=${encodeURIComponent(groupName)}`;
-  const payload = await apiRequest(query);
-  return payload.subscriptions || [];
-}
-
-export async function sendPushNotification(subscription, title, body) {
-  const payload = await apiRequest("/api/push-send", {
-    method: "POST",
-    body: JSON.stringify({ subscription, title, body })
-  });
-  return payload;
-}
-
 export async function getTodoById(id) {
   const todos = await getTodos();
   return todos.find((item) => String(item.id) === String(id)) || null;

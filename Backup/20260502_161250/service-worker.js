@@ -11,7 +11,6 @@ const ASSETS = [
   "/todos/todos.css",
   "/js/session.js",
   "/js/turso-api.js",
-  "/js/push.js",
   "/manifest.json",
   "/assets/icons/icon-192.png",
   "/assets/icons/icon-512.png"
@@ -36,42 +35,6 @@ self.addEventListener("activate", (event) => {
         )
       )
       .then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener("push", (event) => {
-  const payload = event.data?.json?.() || {
-    title: "GeoList",
-    body: "Hai nuovi aggiornamenti nella tua lista condivisa."
-  };
-
-  const title = payload.title || "GeoList";
-  const options = {
-    body: payload.body || "Apri GeoList per vedere i dettagli.",
-    icon: "/assets/icons/icon-192.png",
-    badge: "/assets/icons/icon-192.png",
-    data: {
-      url: "/todos/todos.html"
-    }
-  };
-
-  event.waitUntil(self.registration.showNotification(title, options));
-});
-
-self.addEventListener("notificationclick", (event) => {
-  event.notification.close();
-  const targetUrl = event.notification.data?.url || "/todos/todos.html";
-  event.waitUntil(
-    clients
-      .matchAll({ type: "window", includeUncontrolled: true })
-      .then((windows) => {
-        for (const windowClient of windows) {
-          if (windowClient.url.includes(targetUrl)) {
-            return windowClient.focus();
-          }
-        }
-        return clients.openWindow(targetUrl);
-      })
   );
 });
 
