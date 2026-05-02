@@ -105,6 +105,11 @@
   background: rgba(255, 255, 255, 0.02);
 }
 
+/* Su desktop .todo-meta mostra solo la data (utente è colonna separata) */
+.todo-meta {
+  display: contents;
+}
+
 .todo-row:hover {
   background: rgba(255, 255, 255, 0.05);
 }
@@ -237,51 +242,62 @@
     border-radius: 16px;
   }
 
-  /* Riga singola sempre: data | testo | utente | azioni */
+  /* Layout a due righe su mobile */
   .todo-row {
-    display: grid;
-    grid-template-columns: 68px 1fr 60px 112px;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     gap: 6px;
-    padding: 10px 8px;
-    font-size: 0.82rem;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
   }
 
   .todo-row.header {
-    font-size: 0.72rem;
-    padding: 8px;
+    display: none;
+  }
+
+  .todo-row.section-label {
+    display: block;
+  }
+
+  /* Riga 1: data a sinistra, utente a destra */
+  .todo-row .todo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .todo-date {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     color: var(--muted);
-    line-height: 1.2;
-  }
-
-  .todo-text {
-    font-size: 0.88rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .todo-owner {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    text-align: right;
   }
 
+  /* Riga 2: descrizione */
+  .todo-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  /* Riga 3: icone a sinistra */
   .todo-actions {
-    justify-content: flex-end;
-    gap: 4px;
+    justify-content: flex-start;
+    gap: 8px;
   }
 
   .todo-actions button {
-    width: 34px;
-    height: 34px;
-    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
     border-radius: 10px;
   }
 
@@ -294,13 +310,8 @@
     margin-bottom: 8px;
   }
 
-  .todo-header .eyebrow {
-    display: none;
-  }
-
-  .todo-header .page-title {
-    display: none;
-  }
+  .todo-header .eyebrow { display: none; }
+  .todo-header .page-title { display: none; }
 
   .card-actions {
     flex-direction: column;
@@ -314,10 +325,26 @@
     padding: 12px;
   }
 
-  /* Nascondi pulsante install su mobile: si usa il prompt nativo del browser */
   #installBtn {
     display: none !important;
   }
+
+  /* Modal */
+  .modal {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .form-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
 
   /* Modal */
   .modal {

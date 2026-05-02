@@ -180,9 +180,11 @@ function createTodoRow(item) {
   const row = document.createElement("div");
   row.className = `todo-row${item.status === "FATTA" ? " done" : ""}`;
   row.innerHTML = `
-    <span class="todo-date">${item.createdAt}</span>
+    <div class="todo-meta">
+      <span class="todo-date">${item.createdAt}</span>
+      <span class="todo-owner">${item.createdBy}</span>
+    </div>
     <span class="todo-text">${item.text}</span>
-    <span class="todo-owner">${item.createdBy}</span>
     <span class="todo-actions">
       <button class="icon-button edit-btn" title="Modifica" data-id="${item.id}">✏️</button>
       <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
