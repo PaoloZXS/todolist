@@ -215,6 +215,12 @@
   overflow-x: auto;
 }
 
+@media (max-width: 560px) {
+  .todo-row.empty-message {
+    white-space: pre-line;
+  }
+}
+
 .overlay {
   position: fixed;
   inset: 0;

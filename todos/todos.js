@@ -172,7 +172,7 @@ function renderTodos(todos) {
     const emptyMessage = document.createElement("div");
     emptyMessage.className = "todo-row empty-message";
     emptyMessage.textContent =
-      "Nessuna attività presente. Aggiungi la prima voce per iniziare.";
+      "Nessuna attività presente.\nAggiungi la prima voce per iniziare.";
     todosContainer.appendChild(emptyMessage);
   }
 }
