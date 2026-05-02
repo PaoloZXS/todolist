@@ -115,6 +115,15 @@
   background: rgba(255, 255, 255, 0.02);
 }
 
+.todo-body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
 .todo-meta {
   flex: 0 0 130px;
   display: flex;
@@ -123,13 +132,14 @@
 }
 
 .todo-content {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: flex-start;
   text-align: left;
-  width: 100%;
+  width: auto;
+  min-width: 0;
 }
 
 .todo-content > div {
@@ -140,7 +150,6 @@
 .todo-title,
 .todo-created,
 .todo-updated,
-.todo-content,
 .todo-meta {
   width: 100%;
   text-align: left !important;
