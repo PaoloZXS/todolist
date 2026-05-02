@@ -365,8 +365,8 @@
   .todo-row {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 12px 14px;
+    gap: 4px;
+    padding: 10px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.02);
   }
@@ -385,7 +385,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 14px;
+    gap: 10px;
     width: 100%;
   }
 
@@ -430,12 +430,13 @@
     gap: 6px;
     flex-shrink: 0;
     position: absolute;
-    top: 18px;
-    right: 14px;
+    top: 12px;
+    right: 12px;
   }
 
   .todo-content {
-    padding-right: 96px;
+    padding-right: 84px;
+    gap: 4px;
   }
 
   .todo-actions button {
