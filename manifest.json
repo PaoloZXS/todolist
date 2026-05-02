@@ -1,6 +1,6 @@
 {
-  "name": "Cose da Fare",
-  "short_name": "Cose da Fare",
+  "name": "GeoList",
+  "short_name": "GeoList",
   "description": "Una PWA per gestire attività condivise con login, stato e azioni per ogni utente.",
   "id": "/",
   "start_url": "/",
