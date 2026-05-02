@@ -211,13 +211,16 @@
 .todo-row.empty-message {
   grid-column: 1 / -1;
   display: block;
-  white-space: nowrap;
-  overflow-x: auto;
+  white-space: normal;
+}
+
+.todo-row.empty-message .empty-message-break {
+  display: none;
 }
 
 @media (max-width: 560px) {
-  .todo-row.empty-message {
-    white-space: pre-line;
+  .todo-row.empty-message .empty-message-break {
+    display: block;
   }
 }
 
