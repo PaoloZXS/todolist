@@ -97,7 +97,7 @@
 
 .todo-row {
   display: grid;
-  grid-template-columns: 1fr 4fr 1.5fr 2fr;
+  grid-template-columns: 130px 120px minmax(280px, 1fr) auto;
   align-items: center;
   gap: 16px;
   padding: 16px 18px;
@@ -233,7 +233,7 @@
 
 @media (max-width: 740px) {
   .todo-row {
-    grid-template-columns: 80px 1fr 70px 120px;
+    grid-template-columns: 80px 70px minmax(120px, 1fr) 88px;
     gap: 8px;
     padding: 12px 10px;
   }
