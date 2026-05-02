@@ -284,6 +284,10 @@
   .card-actions {
     margin-top: 20px;
   }
+
+  #pushStatus {
+    margin-top: 18px;
+  }
 }
 
 @media (max-width: 560px) {
