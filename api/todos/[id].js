@@ -55,6 +55,12 @@ async function handlePatch(req, res, todoId) {
       body.text !== undefined ? String(body.text || "").trim() : null;
     const nextStatus =
       body.status !== undefined ? String(body.status || "").trim() : null;
+    const nextPrivate =
+      body.isPrivate !== undefined
+        ? body.isPrivate === true ||
+          body.isPrivate === 1 ||
+          body.isPrivate === "true"
+        : null;
     const actingUserId = String(body.actingUserId || "").trim();
 
     const existing = await execute(
@@ -95,6 +101,24 @@ async function handlePatch(req, res, todoId) {
       const normalizedStatus = nextStatus === "FATTA" ? "FATTA" : "DA FARE";
       await execute("UPDATE todos SET status = ? WHERE id = ?", [
         normalizedStatus,
+        todoId
+      ]);
+    }
+
+    if (nextPrivate !== null) {
+      const canEditPrivate =
+        actingUserId === ownerId || (await isAdminUserId(actingUserId));
+      if (
+        !actingUserId ||
+        !canEditPrivate ||
+        (existing.rows[0].is_private && actingUserId !== ownerId)
+      ) {
+        return sendJson(res, 403, {
+          error: "Puoi modificare solo le tue attività."
+        });
+      }
+      await execute("UPDATE todos SET is_private = ? WHERE id = ?", [
+        nextPrivate ? 1 : 0,
         todoId
       ]);
     }
