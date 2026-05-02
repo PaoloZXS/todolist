@@ -119,11 +119,7 @@
 }
 
 .todo-row.header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  color: var(--muted);
-  font-size: 0.93rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  display: none;
 }
 
 .todo-row.done {
