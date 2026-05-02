@@ -185,9 +185,8 @@ function createTodoRow(item) {
       <span class="todo-owner">${item.createdBy}</span>
     </div>
     <div class="todo-body">
-      <span class="todo-text">${item.text}</span>
+      <span class="todo-text" title="Clicca per modificare">${item.text}</span>
       <span class="todo-actions">
-        <button class="icon-button edit-btn" title="Modifica" data-id="${item.id}">✏️</button>
         <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
         <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
       </span>
@@ -195,7 +194,7 @@ function createTodoRow(item) {
   `;
 
   row
-    .querySelector(".edit-btn")
+    .querySelector(".todo-text")
     .addEventListener("click", () => openEditForm(item));
   row.querySelector(".delete-btn").addEventListener("click", async () => {
     if (item.userId !== user.id) {

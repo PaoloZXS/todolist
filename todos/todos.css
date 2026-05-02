@@ -133,6 +133,13 @@
 .todo-text {
   color: var(--text);
   font-weight: 500;
+  cursor: pointer;
+}
+
+.todo-text:hover {
+  color: var(--accent-soft);
+  text-decoration: underline;
+  text-decoration-style: dotted;
 }
 
 .todo-date {
