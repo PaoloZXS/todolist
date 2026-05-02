@@ -133,6 +133,13 @@
   text-align: left;
 }
 
+.todo-title,
+.todo-created,
+.todo-updated {
+  width: 100%;
+  text-align: left !important;
+}
+
 .todo-actions {
   grid-column: 3;
   align-self: start;
