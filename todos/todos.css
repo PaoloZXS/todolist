@@ -208,6 +208,13 @@
   color: #b9efd5;
 }
 
+.todo-row.empty-message {
+  grid-column: 1 / -1;
+  display: block;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -377,6 +384,10 @@
   .form-actions .button {
     width: 100%;
     justify-content: center;
+  }
+
+  .todo-row.empty-message {
+    white-space: normal;
   }
 }
 
