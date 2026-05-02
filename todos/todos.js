@@ -22,7 +22,10 @@ const addTodoBtn = document.getElementById("addTodoBtn");
 const installBtn = document.getElementById("installBtn");
 const userMenuBtn = document.getElementById("userMenuBtn");
 const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
-const isAdminUser = user.username?.toLowerCase() === ADMIN_EMAIL;
+const ADMIN_DISPLAY_NAME = "Paolo Giorsetti";
+const isAdminUser =
+  (user.username && user.username.toLowerCase() === ADMIN_EMAIL) ||
+  user.name === ADMIN_DISPLAY_NAME;
 const userMenu = document.getElementById("userMenu");
 const logoutBtn = document.getElementById("logoutBtn");
 const todoFormOverlay = document.getElementById("todoFormOverlay");
