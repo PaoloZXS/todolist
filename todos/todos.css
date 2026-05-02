@@ -418,7 +418,7 @@
 
   .todo-row .todo-body {
     display: flex !important;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 8px;
     width: 100%;
@@ -429,13 +429,15 @@
     justify-content: flex-end;
     gap: 6px;
     flex-shrink: 0;
-    position: absolute;
-    top: 12px;
-    right: 12px;
+    position: static;
+    top: auto;
+    right: auto;
+    align-self: flex-start;
+    padding-top: 4px;
   }
 
   .todo-content {
-    padding-right: 84px;
+    padding-right: 0;
     gap: 4px;
   }
 
