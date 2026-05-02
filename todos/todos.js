@@ -263,9 +263,10 @@ function createTodoRow(item) {
     </span>
   `;
 
-  row
-    .querySelector(".todo-text")
-    .addEventListener("click", () => openEditForm(item));
+  const todoTitleElement = row.querySelector(".todo-title");
+  if (todoTitleElement) {
+    todoTitleElement.addEventListener("click", () => openEditForm(item));
+  }
   row.querySelector(".delete-btn").addEventListener("click", async () => {
     if (item.userId !== user.id && !isAdminUser) {
       showMessageModal(
