@@ -60,6 +60,10 @@ if (isStandalone || isMobile) {
   installBtn.classList.add("hidden");
 }
 
+if (isMobile) {
+  addTodoBtn.textContent = "+ Aggiungi";
+}
+
 userGreeting.textContent = `Ciao, ${user.name}`;
 
 console.log("[PWA] isStandalone:", isStandalone);
