@@ -1,6 +1,6 @@
 // IMPORTANTE: incrementare la versione (v3 -> v4 -> v5...) a ogni push/deploy
 // che modifica HTML/CSS/JS/manifest/icone, per forzare refresh corretto su mobile.
-const CACHE_NAME = "cose-da-fare-cache-v3";
+const CACHE_NAME = "cose-da-fare-cache-v4";
 const ASSETS = [
   "/",
   "/index.html",
@@ -20,6 +20,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
@@ -33,6 +34,7 @@ self.addEventListener("activate", (event) => {
             .map((key) => caches.delete(key))
         )
       )
+      .then(() => self.clients.claim())
   );
 });
 
