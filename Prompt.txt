@@ -5,6 +5,7 @@ NOTA OPERATIVA CACHE PWA
   const CACHE_NAME = "cose-da-fare-cache-vX";
 - Esempio: v3 -> v4 -> v5 -> v6.
 - Obiettivo: forzare refresh corretto su mobile ed evitare cache vecchia.
+- Dopo ogni modifica al codice: ricordati sempre di fare git add, git commit e git push.
 
 OBIETTIVO
 Creare una Progressive Web App installabile (scaricabile come app) che permetta a più utenti di:

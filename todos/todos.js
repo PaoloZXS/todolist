@@ -30,11 +30,15 @@ const isAdminUser = user.username?.toLowerCase() === ADMIN_EMAIL;
 const userMenu = document.getElementById("userMenu");
 const logoutBtn = document.getElementById("logoutBtn");
 const todoFormOverlay = document.getElementById("todoFormOverlay");
+const messageOverlay = document.getElementById("messageOverlay");
 const todoForm = document.getElementById("todoForm");
 const todoText = document.getElementById("todoText");
 const todoPrivate = document.getElementById("todoPrivate");
 const todoIdField = document.getElementById("todoId");
 const modalTitle = document.getElementById("modalTitle");
+const messageTitle = document.getElementById("messageTitle");
+const messageText = document.getElementById("messageText");
+const messageCloseBtn = document.getElementById("messageCloseBtn");
 
 let deferredPrompt = null;
 let currentTodos = [];
@@ -133,6 +137,16 @@ todoFormOverlay.addEventListener("click", (event) => {
   if (event.target === todoFormOverlay) {
     closeForm();
   }
+});
+
+messageOverlay.addEventListener("click", (event) => {
+  if (event.target === messageOverlay) {
+    closeMessageModal();
+  }
+});
+
+messageCloseBtn.addEventListener("click", () => {
+  closeMessageModal();
 });
 
 document.getElementById("cancelBtn").addEventListener("click", () => {
@@ -247,7 +261,10 @@ function createTodoRow(item) {
     .addEventListener("click", () => openEditForm(item));
   row.querySelector(".delete-btn").addEventListener("click", async () => {
     if (item.userId !== user.id && !isAdminUser) {
-      alert("Puoi cancellare solo le tue attività.");
+      showMessageModal(
+        "Avviso cancellazione/modifica attività",
+        "Puoi cancellare solo le tue attività."
+      );
       return;
     }
     await deleteTodo(item.id, user.id);
@@ -274,7 +291,10 @@ function openForm() {
 
 function openEditForm(item) {
   if (item.userId !== user.id && !isAdminUser) {
-    alert("Puoi modificare solo le tue attività.");
+    showMessageModal(
+      "Avviso cancellazione/modifica attività",
+      "Puoi modificare solo le tue attività."
+    );
     return;
   }
   todoIdField.value = item.id;
@@ -290,6 +310,16 @@ function closeForm() {
   todoIdField.value = "";
   todoText.value = "";
   todoPrivate.checked = false;
+}
+
+function showMessageModal(title, message) {
+  messageTitle.textContent = title;
+  messageText.textContent = message;
+  messageOverlay.classList.remove("hidden");
+}
+
+function closeMessageModal() {
+  messageOverlay.classList.add("hidden");
 }
 
 window.addEventListener("focus", () => {

@@ -253,6 +253,11 @@
   margin-bottom: 18px;
 }
 
+.message-text {
+  margin: 0 0 18px;
+  line-height: 1.6;
+}
+
 .form-actions {
   display: flex;
   gap: 12px;
@@ -265,6 +270,12 @@
     grid-template-columns: 80px 70px minmax(120px, 1fr) 88px;
     gap: 8px;
     padding: 12px 10px;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 900px) {
+  .card-actions {
+    margin-top: 20px;
   }
 }
 
