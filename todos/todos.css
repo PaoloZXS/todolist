@@ -124,7 +124,7 @@
 
 .todo-actions {
   grid-column: 3;
-  align-self: end;
+  align-self: start;
   display: flex;
   gap: 10px;
 }
