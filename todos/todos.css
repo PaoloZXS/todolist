@@ -102,10 +102,9 @@
 }
 
 .todo-row {
-  display: grid;
-  grid-template-columns: 130px minmax(1fr, 1fr) 92px;
-  align-items: start;
-  justify-items: start;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 16px;
   padding: 16px 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -113,17 +112,18 @@
 }
 
 .todo-meta {
-  grid-column: 1;
-  justify-self: start;
+  flex: 0 0 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .todo-content {
-  grid-column: 2;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: flex-start;
-  justify-items: start;
   text-align: left;
   width: 100%;
 }
@@ -143,8 +143,7 @@
 }
 
 .todo-actions {
-  grid-column: 3;
-  align-self: start;
+  align-self: flex-start;
   display: flex;
   gap: 10px;
 }
