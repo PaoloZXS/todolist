@@ -243,16 +243,18 @@ function createTodoRow(item) {
   row.innerHTML = `
     <div class="todo-meta">
       <span class="todo-date">${item.createdAt}</span>
-      <span class="todo-owner">${item.createdBy}</span>
-      ${
-        item.updatedBy && item.updatedBy !== item.createdBy
-          ? `
-      <span class="todo-updated">
-        ${item.status === "FATTA" ? "Completata da" : "Segnata DA FARE da"}: ${item.updatedBy}
+      <span class="todo-owner">
+        ${item.createdBy}
+        ${
+          item.updatedBy && item.updatedBy !== item.createdBy
+            ? `
+        <span class="todo-updated">
+          ${item.status === "FATTA" ? "Completata da" : "Segnata DA FARE da"}: ${item.updatedBy}
+        </span>
+        `
+            : ""
+        }
       </span>
-      `
-          : ""
-      }
     </div>
     <div class="todo-body">
       <span class="todo-text" title="Clicca per modificare">
