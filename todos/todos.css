@@ -480,13 +480,14 @@
   }
 
   .user-menu-wrapper {
-    position: static;
+    position: relative;
     width: 100%;
   }
 
   .user-menu {
     right: 0;
     left: auto;
+    z-index: 2000;
   }
 
   /* Layout a due righe su mobile */
