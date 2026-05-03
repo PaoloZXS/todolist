@@ -473,7 +473,8 @@
     width: auto;
     align-self: flex-start;
     margin-bottom: 16px;
-    z-index: 100;
+    position: relative;
+    z-index: 3;
   }
 
   .card-actions > button {
@@ -481,16 +482,18 @@
     min-width: 0;
     white-space: normal;
     align-self: flex-start;
+    position: relative;
     z-index: 1;
   }
 
   .user-menu-wrapper {
-    position: static;
+    position: relative;
     width: auto;
   }
 
   .user-menu-btn {
-    z-index: 101;
+    position: relative;
+    z-index: 3;
   }
 
   .user-menu {
