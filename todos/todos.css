@@ -477,7 +477,7 @@
     align-self: flex-start;
     display: block;
     margin-bottom: 0;
-    margin-left: 0;
+    margin-left: 40px;
     position: relative;
     z-index: 3;
   }
