@@ -119,7 +119,7 @@ function populateUserList(users) {
   users.forEach((userItem) => {
     const option = document.createElement("option");
     option.value = userItem.username;
-    option.textContent = `${userItem.username} — ${
+    option.textContent = `${userItem.username} → ${
       userItem.groupName || "(nessun gruppo)"
     }`;
     option.dataset.groupName = userItem.groupName || "";
