@@ -40,12 +40,14 @@ targetUserSelect.addEventListener("change", () => {
 adminForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   adminMessage.textContent = "";
+  adminMessage.style.display = "none";
 
   const targetUsername = targetUsernameInput.value.trim();
   const newGroupName = newGroupNameInput.value.trim();
 
   if (!targetUsername || !newGroupName) {
     adminMessage.textContent = "Completa tutti i campi per continuare.";
+    adminMessage.style.display = "block";
     return;
   }
 
@@ -66,12 +68,14 @@ adminForm.addEventListener("submit", async (event) => {
     if (!response.ok) {
       adminMessage.textContent =
         payload.error || "Errore durante l'aggiornamento.";
+      adminMessage.style.display = "block";
       return;
     }
 
     adminMessage.textContent =
       payload.message || "Gruppo aggiornato con successo.";
     adminMessage.style.color = "#b8f1c8";
+    adminMessage.style.display = "block";
   } catch (error) {
     console.error(error);
     adminMessage.textContent = "Errore di comunicazione al server.";
@@ -82,6 +86,7 @@ adminForm.addEventListener("submit", async (event) => {
 async function loadAdminUsers() {
   adminMessage.textContent = "";
   adminMessage.style.color = "";
+  adminMessage.style.display = "none";
 
   try {
     const response = await fetch("/api/admin-users", {

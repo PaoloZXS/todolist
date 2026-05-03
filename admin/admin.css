@@ -14,7 +14,7 @@
 .note-text {
   margin-top: 18px;
   color: #ccd6f8;
-  min-height: 24px;
+  display: none;
 }
 
 .user-list-shell {
