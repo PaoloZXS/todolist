@@ -77,7 +77,7 @@ if (isStandalone || isMobile) {
 }
 
 if (isMobile) {
-  addTodoBtn.textContent = "+ Aggiungi";
+  addTodoBtn.textContent = "+ Aggiungi Attivita'";
 }
 
 userGreeting.textContent = `Ciao, ${user.name}`;
