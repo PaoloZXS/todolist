@@ -102,9 +102,6 @@ async function loadAdminUsers() {
     }
 
     populateUserList(payload.users || []);
-    adminMessage.textContent =
-      "Lista utenti caricata. Seleziona un utente per modificare il gruppo.";
-    adminMessage.style.color = "#b8f1c8";
   } catch (error) {
     console.error(error);
     adminMessage.textContent = "Errore di comunicazione al server.";
