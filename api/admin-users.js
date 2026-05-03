@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import { execute } from "./_db.js";
 import { methodNotAllowed, readJsonBody, sendJson } from "./_helpers.js";
 
@@ -12,10 +11,6 @@ async function ensureUserGroupColumn() {
   } catch (error) {
     // Ignore if column already exists.
   }
-}
-
-function hashPassword(password) {
-  return crypto.createHash("sha256").update(password).digest("hex");
 }
 
 export default async function handler(req, res) {

@@ -1,4 +1,4 @@
-import { requireLogin, clearUserSession } from "../js/session.js";
+import { requireLogin } from "../js/session.js";
 
 const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
 const user = requireLogin();
@@ -13,14 +13,12 @@ if (user.username?.toLowerCase() !== ADMIN_EMAIL) {
 const adminForm = document.getElementById("adminForm");
 const targetUsernameInput = document.getElementById("targetUsername");
 const newGroupNameInput = document.getElementById("newGroupName");
-const adminPasswordInput = document.getElementById("adminPassword");
 const targetUserSelect = document.getElementById("targetUserSelect");
 const adminMessage = document.getElementById("adminMessage");
 
 window.addEventListener("load", () => {
   targetUsernameInput.value = "";
   newGroupNameInput.value = "";
-  adminPasswordInput.value = "";
   targetUserSelect.selectedIndex = 0;
   loadAdminUsers();
 
@@ -45,9 +43,8 @@ adminForm.addEventListener("submit", async (event) => {
 
   const targetUsername = targetUsernameInput.value.trim();
   const newGroupName = newGroupNameInput.value.trim();
-  const adminPassword = adminPasswordInput.value.trim();
 
-  if (!targetUsername || !newGroupName || !adminPassword) {
+  if (!targetUsername || !newGroupName) {
     adminMessage.textContent = "Completa tutti i campi per continuare.";
     return;
   }
@@ -60,7 +57,6 @@ adminForm.addEventListener("submit", async (event) => {
       },
       body: JSON.stringify({
         adminEmail: user.username,
-        adminPassword,
         targetUsername,
         newGroupName
       })
@@ -86,8 +82,6 @@ adminForm.addEventListener("submit", async (event) => {
 async function loadAdminUsers() {
   adminMessage.textContent = "";
   adminMessage.style.color = "";
-
-  const adminPassword = adminPasswordInput.value.trim();
 
   try {
     const response = await fetch("/api/admin-users", {

@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import { execute } from "./_db.js";
 import { methodNotAllowed, readJsonBody, sendJson } from "./_helpers.js";
 
@@ -14,10 +13,6 @@ async function ensureUserGroupColumn() {
   }
 }
 
-function hashPassword(password) {
-  return crypto.createHash("sha256").update(password).digest("hex");
-}
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return methodNotAllowed(req, res, ["POST"]);
@@ -28,14 +23,12 @@ export default async function handler(req, res) {
     const adminEmail = String(
       body.adminEmail || body.adminUsername || ""
     ).trim();
-    const adminPassword = String(body.adminPassword || "").trim();
     const targetUsername = String(body.targetUsername || "").trim();
     const newGroupName = String(body.newGroupName || "").trim();
 
-    if (!adminEmail || !adminPassword || !targetUsername || !newGroupName) {
+    if (!adminEmail || !targetUsername || !newGroupName) {
       return sendJson(res, 400, {
-        error:
-          "adminEmail, adminPassword, targetUsername e newGroupName sono obbligatori."
+        error: "adminEmail, targetUsername e newGroupName sono obbligatori."
       });
     }
 
@@ -46,20 +39,6 @@ export default async function handler(req, res) {
     }
 
     await ensureUserGroupColumn();
-
-    const adminLookup = await execute(
-      "SELECT id, password_hash FROM users WHERE username = ? LIMIT 1",
-      [adminEmail]
-    );
-
-    if (
-      !adminLookup.rows.length ||
-      adminLookup.rows[0].password_hash !== hashPassword(adminPassword)
-    ) {
-      return sendJson(res, 401, {
-        error: "Credenziali amministratore non valide."
-      });
-    }
 
     const targetLookup = await execute(
       "SELECT id, username, group_name FROM users WHERE username = ? LIMIT 1",
