@@ -1,4 +1,4 @@
-import { savePushSubscription } from "./turso-api.js";
+import { savePushSubscription, deletePushSubscription } from "./turso-api.js";
 
 const VAPID_PLACEHOLDER = "INSERISCI_VAPID_PUBLIC_KEY";
 
@@ -46,7 +46,8 @@ function updatePushButtonState(
 ) {
   if (!button) return;
   button.disabled = !enabled;
-  button.textContent = active ? "🔔 Notifiche attive" : "🔔 Attiva notifiche";
+  button.textContent = active ? "� Disattiva notifiche" : "🔔 Attiva notifiche";
+  button.dataset.pushActive = active ? "true" : "false";
   button.classList.toggle("button-primary", active);
   button.classList.toggle("button-secondary", !active);
   const status = document.getElementById("pushStatus");
@@ -112,29 +113,55 @@ export async function initPushNotifications(user) {
 
   pushButton.addEventListener("click", async () => {
     pushButton.disabled = true;
+    const active = pushButton.dataset.pushActive === "true";
+
     try {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") {
-        updatePushButtonState(pushButton, "Permessi notifiche negati.", false);
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+
+      if (active && subscription) {
+        await subscription.unsubscribe();
+        await deletePushSubscription(subscription.endpoint);
+        updatePushButtonState(
+          pushButton,
+          "Notifiche disattivate.",
+          true,
+          false
+        );
         return;
       }
 
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.subscribe({
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        updatePushButtonState(
+          pushButton,
+          "Permessi notifiche negati.",
+          false,
+          false
+        );
+        return;
+      }
+
+      const newSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
       });
 
-      await savePushSubscription(user.id, user.groupName || "", subscription);
+      await savePushSubscription(
+        user.id,
+        user.groupName || "",
+        newSubscription
+      );
       const successText = isMobile
         ? "Notifiche attivate.<br/>Riceverai aggiornamenti di gruppo."
         : "Notifiche attivate. Riceverai aggiornamenti di gruppo.";
       updatePushButtonState(pushButton, successText, true, true);
     } catch (error) {
-      console.error("Push subscription failed:", error);
+      console.error("Push subscription toggle failed:", error);
       updatePushButtonState(
         pushButton,
-        "Errore durante l'iscrizione alle notifiche.",
+        "Errore nella gestione delle notifiche.",
+        false,
         false
       );
     }

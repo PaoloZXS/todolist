@@ -70,6 +70,13 @@ export async function getGroupSubscriptions(groupName) {
   }));
 }
 
+export async function deletePushSubscription(endpoint) {
+  await ensurePushTable();
+  await execute(`DELETE FROM push_subscriptions WHERE endpoint = ?`, [
+    endpoint
+  ]);
+}
+
 export async function sendPushNotification(subscription, title, body) {
   if (!KEYS_CONFIGURED) {
     console.warn("VAPID keys non configurate, notifica push non inviata.");

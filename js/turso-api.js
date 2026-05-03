@@ -115,6 +115,14 @@ export async function savePushSubscription(userId, groupName, subscription) {
   return payload;
 }
 
+export async function deletePushSubscription(endpoint) {
+  const payload = await apiRequest("/api/push-subscriptions", {
+    method: "DELETE",
+    body: JSON.stringify({ endpoint })
+  });
+  return payload;
+}
+
 export async function getGroupSubscriptions(groupName) {
   const query = `/api/push-subscriptions?groupName=${encodeURIComponent(groupName)}`;
   const payload = await apiRequest(query);
