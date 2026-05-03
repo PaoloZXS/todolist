@@ -474,6 +474,7 @@
     align-self: flex-start;
     display: block;
     margin-bottom: 0;
+    margin-left: 24px;
     position: relative;
     z-index: 3;
   }
