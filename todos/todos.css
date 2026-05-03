@@ -487,6 +487,8 @@
   .user-menu {
     left: 0;
     right: auto;
+    top: calc(100% + 8px);
+    width: 100%;
     z-index: 2000;
   }
 
