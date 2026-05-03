@@ -417,10 +417,15 @@
 @media (min-width: 561px) and (max-width: 900px) {
   .card-actions {
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
+    gap: 10px;
+    flex-wrap: nowrap;
     align-items: center;
     margin-top: 20px;
+  }
+
+  .card-actions > button,
+  .card-actions > .user-menu-wrapper {
+    min-width: 0;
   }
 
   #pushStatus {
