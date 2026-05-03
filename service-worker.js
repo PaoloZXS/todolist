@@ -1,11 +1,14 @@
 // IMPORTANTE: incrementare la versione (v3 -> v4 -> v5 -> v6...) a ogni push/deploy
 // che modifica HTML/CSS/JS/manifest/icone, per forzare refresh corretto su mobile.
-const CACHE_NAME = "cose-da-fare-cache-v12";
+const CACHE_NAME = "cose-da-fare-cache-v13";
 const ASSETS = [
   "/",
   "/index.html",
   "/login/login.html",
   "/todos/todos.html",
+  "/admin/admin.html",
+  "/admin/admin.js",
+  "/admin/admin.css",
   "/css/base.css",
   "/login/login.css",
   "/todos/todos.css",

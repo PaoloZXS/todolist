@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoList Admin</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="admin.css" />
+    <meta name="theme-color" content="#293248" />
+  </head>
+  <body class="login-shell">
+    <main class="center-shell">
+      <section class="card card-compact login-card">
+        <div class="header-row">
+          <div>
+            <p class="eyebrow">Admin GeoList</p>
+            <h1 class="page-title">Reset gruppo utente</h1>
+          </div>
+        </div>
+        <p class="intro-text">
+          Inserisci l'utente e il nuovo gruppo. Solo l'amministratore può
+          eseguire questa operazione.
+        </p>
+        <form id="adminForm" class="form-shell">
+          <label>
+            Utente (username)
+            <input
+              type="text"
+              id="targetUsername"
+              autocomplete="username"
+              required
+              placeholder="Es. mario.rossi@esempio.com"
+            />
+          </label>
+          <label>
+            Nuovo gruppo
+            <input
+              type="text"
+              id="newGroupName"
+              autocomplete="organization"
+              required
+              placeholder="Es. Famiglia Giorsetti"
+            />
+          </label>
+          <label>
+            Password amministratore
+            <input
+              type="password"
+              id="adminPassword"
+              autocomplete="current-password"
+              required
+              placeholder="Inserisci la tua password"
+            />
+          </label>
+          <div class="actions-row">
+            <button type="submit" class="button button-primary">
+              Aggiorna gruppo
+            </button>
+            <a class="button button-secondary" href="../todos/todos.html"
+              >Torna indietro</a
+            >
+          </div>
+        </form>
+        <p id="adminMessage" class="note-text"></p>
+      </section>
+    </main>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>

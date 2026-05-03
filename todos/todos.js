@@ -25,6 +25,7 @@ const todosContainer = document.getElementById("todosContainer");
 const addTodoBtn = document.getElementById("addTodoBtn");
 const installBtn = document.getElementById("installBtn");
 const userMenuBtn = document.getElementById("userMenuBtn");
+const adminPageBtn = document.getElementById("adminPageBtn");
 const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
 const isAdminUser = user.username?.toLowerCase() === ADMIN_EMAIL;
 const userMenu = document.getElementById("userMenu");
@@ -128,6 +129,13 @@ logoutBtn.addEventListener("click", () => {
   clearUserSession();
   window.location.href = "../login/login.html";
 });
+
+if (isAdminUser) {
+  adminPageBtn.classList.remove("hidden");
+  adminPageBtn.addEventListener("click", () => {
+    window.location.href = "../admin/admin.html";
+  });
+}
 
 addTodoBtn.addEventListener("click", () => {
   openForm();

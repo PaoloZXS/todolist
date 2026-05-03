@@ -1,0 +1,32 @@
+.login-card {
+  max-width: 540px;
+}
+
+.form-shell {
+  margin-top: 18px;
+}
+
+.actions-row {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.note-text {
+  margin-top: 18px;
+  color: #ccd6f8;
+  min-height: 24px;
+}
+
+input[type="text"],
+input[type="password"] {
+  margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+  .actions-row {
+    flex-direction: column;
+  }
+  .button {
+    width: 100%;
+  }
+}
