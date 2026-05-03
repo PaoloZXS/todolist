@@ -455,8 +455,16 @@
   }
 
   .card-actions {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .card-actions > button,
+  .card-actions > .user-menu-wrapper {
+    flex: 0 1 auto;
   }
 
   .user-menu-wrapper {
