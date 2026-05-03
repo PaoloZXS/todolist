@@ -79,7 +79,7 @@ export default async function handler(req, res) {
     if (existing.group_name && existing.group_name !== groupName) {
       return sendJson(res, 401, {
         error:
-          "Gruppo non corrispondente. Inserisci l'Azienda/Famiglia corretta."
+          "Hai già un account registrato con questo username in un altro gruppo. Inserisci il nome del gruppo esatto o crea un account nuovo con un altro username."
       });
     }
 

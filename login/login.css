@@ -17,6 +17,12 @@
   min-height: 24px;
 }
 
+.hint-text {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: #96a8d4;
+}
+
 input[type="text"],
 input[type="password"] {
   margin-top: 8px;
