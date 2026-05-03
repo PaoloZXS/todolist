@@ -120,11 +120,15 @@ userMenuBtn.addEventListener("click", (event) => {
   const currentlyHidden = userMenu.classList.contains("hidden");
   if (currentlyHidden) {
     userMenu.classList.remove("hidden");
+    userMenu.classList.add("visible");
     userMenu.style.display = "block";
+    userMenu.style.visibility = "visible";
     userMenuBtn.classList.add("active");
   } else {
     userMenu.classList.add("hidden");
+    userMenu.classList.remove("visible");
     userMenu.style.display = "none";
+    userMenu.style.visibility = "hidden";
     userMenuBtn.classList.remove("active");
   }
 });
@@ -135,7 +139,9 @@ document.addEventListener("click", (event) => {
     !userMenu.classList.contains("hidden")
   ) {
     userMenu.classList.add("hidden");
+    userMenu.classList.remove("visible");
     userMenu.style.display = "none";
+    userMenu.style.visibility = "hidden";
     userMenuBtn.classList.remove("active");
   }
 });
