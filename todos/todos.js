@@ -289,6 +289,7 @@ function createTodoRow(item) {
       );
       return;
     }
+    showLoading();
     rowButtons.forEach((btn) => (btn.disabled = true));
     try {
       await deleteTodo(item.id, user.id);
@@ -297,14 +298,16 @@ function createTodoRow(item) {
       console.error("Errore eliminazione attività:", error);
       alert("Errore durante l'eliminazione. Riprova.");
       rowButtons.forEach((btn) => (btn.disabled = false));
+    } finally {
+      hideLoading();
     }
   });
 
   toggleBtn.addEventListener("click", async () => {
     const newStatus = item.status === "FATTA" ? "DA FARE" : "FATTA";
     const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
+    showLoading();
     rowButtons.forEach((btn) => (btn.disabled = true));
-    toggleBtn.classList.add("loading");
     try {
       await toggleTodoStatus(item.id, newStatus, user.id, sourceEndpoint);
       await loadTodos();
@@ -312,7 +315,8 @@ function createTodoRow(item) {
       console.error("Errore toggle attività:", error);
       alert("Errore durante l'aggiornamento. Riprova.");
       rowButtons.forEach((btn) => (btn.disabled = false));
-      toggleBtn.classList.remove("loading");
+    } finally {
+      hideLoading();
     }
   });
 
@@ -359,6 +363,20 @@ function showMessageModal(title, message) {
 
 function closeMessageModal() {
   messageOverlay.classList.add("hidden");
+}
+
+function showLoading() {
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (loadingOverlay) {
+    loadingOverlay.classList.remove("hidden");
+  }
+}
+
+function hideLoading() {
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (loadingOverlay) {
+    loadingOverlay.classList.add("hidden");
+  }
 }
 
 window.addEventListener("focus", () => {
