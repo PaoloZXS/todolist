@@ -461,27 +461,27 @@
 
   .card-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
+    flex-direction: column;
     gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .card-actions > .user-menu-wrapper {
+    order: -1;
     width: 100%;
   }
 
   .card-actions > button {
-    flex: 1 1 0;
+    width: 100%;
     min-width: 0;
-    white-space: nowrap;
-  }
-
-  .card-actions > .user-menu-wrapper {
-    flex: 0 1 auto;
-    min-width: 0;
+    white-space: normal;
   }
 
   .user-menu-wrapper {
     position: static;
-    width: auto;
+    width: 100%;
   }
 
   .user-menu {
