@@ -27,7 +27,9 @@
             href="./login/login.html"
             >Carica App</a
           >
-          <a class="button button-secondary" href="./login/login.html">Login</a>
+          <button id="authActionButton" class="button button-secondary">
+            Login
+          </button>
           <button id="installBtnHome" class="button button-secondary">
             📲 Installa App
           </button>
@@ -35,8 +37,9 @@
       </section>
     </main>
     <script type="module">
-      import { getCurrentUser } from "/js/session.js";
+      import { getCurrentUser, clearUserSession } from "/js/session.js";
       const entryButton = document.getElementById("entryButton");
+      const authActionButton = document.getElementById("authActionButton");
       const installBtnHome = document.getElementById("installBtnHome");
       const user = getCurrentUser();
       let deferredPrompt = null;
@@ -66,10 +69,21 @@
       if (user) {
         entryButton.textContent = "Vai alla lista";
         entryButton.href = "./todos/todos.html";
+        authActionButton.textContent = "Logout";
       } else {
         entryButton.textContent = "Login / Registrati";
         entryButton.href = "./login/login.html";
+        authActionButton.textContent = "Login";
       }
+
+      authActionButton.addEventListener("click", () => {
+        if (user) {
+          clearUserSession();
+          window.location.href = "./login/login.html";
+        } else {
+          window.location.href = "./login/login.html";
+        }
+      });
 
       // Debug PWA installation
       console.log("[PWA] isStandalone:", isStandalone);
