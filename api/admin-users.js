@@ -28,9 +28,9 @@ export default async function handler(req, res) {
     const adminEmail = String(body.adminEmail || "").trim();
     const adminPassword = String(body.adminPassword || "").trim();
 
-    if (!adminEmail || !adminPassword) {
+    if (!adminEmail) {
       return sendJson(res, 400, {
-        error: "adminEmail e adminPassword sono obbligatori."
+        error: "adminEmail è obbligatorio."
       });
     }
 

@@ -14,11 +14,12 @@ const adminForm = document.getElementById("adminForm");
 const targetUsernameInput = document.getElementById("targetUsername");
 const newGroupNameInput = document.getElementById("newGroupName");
 const adminPasswordInput = document.getElementById("adminPassword");
-const loadUsersBtn = document.getElementById("loadUsersBtn");
 const targetUserSelect = document.getElementById("targetUserSelect");
 const adminMessage = document.getElementById("adminMessage");
 
-loadUsersBtn.addEventListener("click", loadAdminUsers);
+window.addEventListener("load", () => {
+  loadAdminUsers();
+});
 
 targetUserSelect.addEventListener("change", () => {
   const selectedOption = targetUserSelect.selectedOptions[0];
@@ -79,11 +80,6 @@ async function loadAdminUsers() {
   adminMessage.style.color = "";
 
   const adminPassword = adminPasswordInput.value.trim();
-  if (!adminPassword) {
-    adminMessage.textContent =
-      "Inserisci la password amministratore per caricare gli utenti.";
-    return;
-  }
 
   try {
     const response = await fetch("/api/admin-users", {
@@ -92,8 +88,7 @@ async function loadAdminUsers() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        adminEmail: user.username,
-        adminPassword
+        adminEmail: user.username
       })
     });
 
