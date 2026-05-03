@@ -46,7 +46,7 @@ function updatePushButtonState(
 ) {
   if (!button) return;
   button.disabled = !enabled;
-  button.textContent = active ? "🔔 Notifiche SI" : "🔔 Notifiche NO";
+  button.textContent = active ? "Notifiche SI" : "Notifiche NO";
   button.dataset.pushActive = active ? "true" : "false";
   button.classList.toggle("button-primary", active);
   button.classList.toggle("button-secondary", !active);
