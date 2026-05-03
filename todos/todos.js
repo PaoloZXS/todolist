@@ -384,7 +384,33 @@ window.addEventListener("focus", () => {
 });
 
 window.addEventListener("load", async () => {
-  await loadTodos();
+  showLoading();
+  try {
+    await cleanupOldCompletedTodos();
+    await loadTodos();
+  } finally {
+    hideLoading();
+  }
   await initPushNotifications(user);
   startAutoRefresh();
 });
+
+async function cleanupOldCompletedTodos() {
+  try {
+    const response = await fetch("/api/todos/cleanup-old-completed", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      console.warn("Cleanup old completed todos failed:", payload.error);
+      return 0;
+    }
+    return payload.deletedCount || 0;
+  } catch (error) {
+    console.warn("Cleanup old completed todos error:", error);
+    return 0;
+  }
+}
