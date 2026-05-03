@@ -234,7 +234,10 @@ function renderTodos(todos) {
   }
   if (done.length) {
     todosContainer.appendChild(
-      createSectionLabel("Attività completate", "section-completed")
+      createSectionLabel(
+        `Attività completate (${done.length})`,
+        "section-completed"
+      )
     );
     done.forEach((item) => todosContainer.appendChild(createTodoRow(item)));
   }
