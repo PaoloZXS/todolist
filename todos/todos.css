@@ -562,8 +562,29 @@
     margin-bottom: 8px;
   }
 
-  .todo-header .eyebrow { display: none; }
+  .todo-header .eyebrow {
+    display: block;
+    color: #eef2ff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
   .todo-header .page-title { display: none; }
+
+  .app-version {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d8e2ff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left: 10px;
+  }
 
   .card-actions {
     flex-direction: column;

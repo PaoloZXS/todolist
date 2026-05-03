@@ -6,6 +6,7 @@ import {
   deleteTodo,
   toggleTodoStatus
 } from "../js/turso-api.js";
+import { APP_VERSION } from "../js/app-version.js";
 import {
   initPushNotifications,
   getCurrentPushSubscriptionEndpoint
@@ -80,6 +81,10 @@ if (isMobile) {
 }
 
 userGreeting.textContent = `Ciao, ${user.name}`;
+const appVersionLabel = document.getElementById("appVersion");
+if (appVersionLabel) {
+  appVersionLabel.textContent = APP_VERSION;
+}
 
 console.log("[PWA] isStandalone:", isStandalone);
 console.log("[PWA] beforeinstallprompt awaiting...");
