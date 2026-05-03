@@ -462,7 +462,7 @@
   .card-actions {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 24px;
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
@@ -472,7 +472,8 @@
     order: -1;
     width: auto;
     align-self: flex-start;
-    margin-bottom: 16px;
+    display: block;
+    margin-bottom: 0;
     position: relative;
     z-index: 3;
   }
@@ -484,6 +485,11 @@
     align-self: flex-start;
     position: relative;
     z-index: 1;
+    margin-top: 0;
+  }
+
+  #addTodoBtn {
+    margin-top: 24px;
   }
 
   .user-menu-wrapper {
