@@ -23,6 +23,10 @@ window.addEventListener("load", () => {
   adminPasswordInput.value = "";
   targetUserSelect.selectedIndex = 0;
   loadAdminUsers();
+
+  setTimeout(() => {
+    targetUsernameInput.value = "";
+  }, 50);
 });
 
 targetUserSelect.addEventListener("change", () => {
