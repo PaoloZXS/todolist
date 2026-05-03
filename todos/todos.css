@@ -468,7 +468,11 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    padding-left: 24px;
+  }
+
+  .card-actions > .user-menu-wrapper,
+  .card-actions > button {
+    margin-left: 24px;
   }
 
   .card-actions > .user-menu-wrapper {
@@ -477,7 +481,6 @@
     align-self: flex-start;
     display: block;
     margin-bottom: 0;
-    margin-left: 0;
     position: relative;
     z-index: 3;
   }
