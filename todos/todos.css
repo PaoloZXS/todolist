@@ -470,7 +470,6 @@
     width: 100%;
   }
 
-  .card-actions > .user-menu-wrapper,
   .card-actions > button {
     margin-left: 24px;
   }
@@ -481,6 +480,7 @@
     align-self: flex-start;
     display: block;
     margin-bottom: 0;
+    margin-left: 42px;
     position: relative;
     z-index: 3;
   }
