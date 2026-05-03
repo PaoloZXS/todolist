@@ -472,6 +472,7 @@
     order: -1;
     width: auto;
     align-self: flex-start;
+    margin-bottom: 16px;
   }
 
   .card-actions > button {
