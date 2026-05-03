@@ -17,6 +17,28 @@
   min-height: 24px;
 }
 
+.user-list-shell {
+  margin-top: 18px;
+}
+
+.load-users-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.user-list-shell select {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #edf2ff;
+}
+
 input[type="text"],
 input[type="password"] {
   margin-top: 8px;

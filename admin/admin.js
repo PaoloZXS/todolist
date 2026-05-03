@@ -14,7 +14,21 @@ const adminForm = document.getElementById("adminForm");
 const targetUsernameInput = document.getElementById("targetUsername");
 const newGroupNameInput = document.getElementById("newGroupName");
 const adminPasswordInput = document.getElementById("adminPassword");
+const loadUsersBtn = document.getElementById("loadUsersBtn");
+const targetUserSelect = document.getElementById("targetUserSelect");
 const adminMessage = document.getElementById("adminMessage");
+
+loadUsersBtn.addEventListener("click", loadAdminUsers);
+
+targetUserSelect.addEventListener("change", () => {
+  const selectedOption = targetUserSelect.selectedOptions[0];
+  if (!selectedOption || !selectedOption.value) {
+    targetUsernameInput.value = "";
+    return;
+  }
+  targetUsernameInput.value = selectedOption.value;
+  newGroupNameInput.value = selectedOption.dataset.groupName || "";
+});
 
 adminForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -45,14 +59,71 @@ adminForm.addEventListener("submit", async (event) => {
 
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
-      adminMessage.textContent = payload.error || "Errore durante l'aggiornamento.";
+      adminMessage.textContent =
+        payload.error || "Errore durante l'aggiornamento.";
       return;
     }
 
-    adminMessage.textContent = payload.message || "Gruppo aggiornato con successo.";
+    adminMessage.textContent =
+      payload.message || "Gruppo aggiornato con successo.";
+    adminMessage.style.color = "#b8f1c8";
+  } catch (error) {
+    console.error(error);
+    adminMessage.textContent = "Errore di comunicazione al server.";
+    adminMessage.style.color = "";
+  }
+});
+
+async function loadAdminUsers() {
+  adminMessage.textContent = "";
+  adminMessage.style.color = "";
+
+  const adminPassword = adminPasswordInput.value.trim();
+  if (!adminPassword) {
+    adminMessage.textContent =
+      "Inserisci la password amministratore per caricare gli utenti.";
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/admin-users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        adminEmail: user.username,
+        adminPassword
+      })
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      adminMessage.textContent =
+        payload.error || "Errore durante il caricamento utenti.";
+      return;
+    }
+
+    populateUserList(payload.users || []);
+    adminMessage.textContent =
+      "Lista utenti caricata. Seleziona un utente per modificare il gruppo.";
     adminMessage.style.color = "#b8f1c8";
   } catch (error) {
     console.error(error);
     adminMessage.textContent = "Errore di comunicazione al server.";
   }
-});
+}
+
+function populateUserList(users) {
+  targetUserSelect.innerHTML =
+    "<option value=''>-- Scegli un utente --</option>";
+  users.forEach((userItem) => {
+    const option = document.createElement("option");
+    option.value = userItem.username;
+    option.textContent = `${userItem.username} — ${
+      userItem.groupName || "(nessun gruppo)"
+    }`;
+    option.dataset.groupName = userItem.groupName || "";
+    targetUserSelect.appendChild(option);
+  });
+}

@@ -1,0 +1,78 @@
+import crypto from "node:crypto";
+import { execute } from "./_db.js";
+import { methodNotAllowed, readJsonBody, sendJson } from "./_helpers.js";
+
+const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
+
+async function ensureUserGroupColumn() {
+  try {
+    await execute(
+      "ALTER TABLE users ADD COLUMN group_name TEXT NOT NULL DEFAULT ''"
+    );
+  } catch (error) {
+    // Ignore if column already exists.
+  }
+}
+
+function hashPassword(password) {
+  return crypto.createHash("sha256").update(password).digest("hex");
+}
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return methodNotAllowed(req, res, ["POST"]);
+  }
+
+  try {
+    const body = await readJsonBody(req);
+    const adminEmail = String(body.adminEmail || "").trim();
+    const adminPassword = String(body.adminPassword || "").trim();
+
+    if (!adminEmail || !adminPassword) {
+      return sendJson(res, 400, {
+        error: "adminEmail e adminPassword sono obbligatori."
+      });
+    }
+
+    if (adminEmail.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      return sendJson(res, 403, {
+        error: "Accesso admin non autorizzato."
+      });
+    }
+
+    await ensureUserGroupColumn();
+
+    const adminLookup = await execute(
+      "SELECT password_hash FROM users WHERE username = ? LIMIT 1",
+      [adminEmail]
+    );
+
+    if (
+      !adminLookup.rows.length ||
+      adminLookup.rows[0].password_hash !== hashPassword(adminPassword)
+    ) {
+      return sendJson(res, 401, {
+        error: "Credenziali amministratore non valide."
+      });
+    }
+
+    const usersResult = await execute(
+      "SELECT username, group_name FROM users WHERE username != ? ORDER BY username",
+      [ADMIN_EMAIL]
+    );
+
+    const users = usersResult.rows.map((row) => ({
+      username: String(row.username),
+      groupName: String(row.group_name || "")
+    }));
+
+    return sendJson(res, 200, {
+      users
+    });
+  } catch (error) {
+    console.error(error);
+    return sendJson(res, 500, {
+      error: "Errore durante il recupero degli utenti."
+    });
+  }
+}
