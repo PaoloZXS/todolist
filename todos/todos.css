@@ -485,8 +485,8 @@
   }
 
   .user-menu {
-    right: 0;
-    left: auto;
+    left: 0;
+    right: auto;
     z-index: 2000;
   }
 
