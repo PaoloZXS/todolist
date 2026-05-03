@@ -31,6 +31,7 @@ const ADMIN_EMAIL = "paolo.giorsetti@codarini.com";
 const isAdminUser = user.username?.toLowerCase() === ADMIN_EMAIL;
 const userMenu = document.getElementById("userMenu");
 const logoutBtn = document.getElementById("logoutBtn");
+const pushToggleBtn = document.getElementById("pushToggleBtn");
 const todoFormOverlay = document.getElementById("todoFormOverlay");
 const messageOverlay = document.getElementById("messageOverlay");
 const todoForm = document.getElementById("todoForm");
@@ -115,6 +116,15 @@ installBtn.addEventListener("click", async () => {
   deferredPrompt = null;
 });
 
+function closeUserMenu() {
+  if (userMenu.classList.contains("hidden")) return;
+  userMenu.classList.add("hidden");
+  userMenu.classList.remove("visible");
+  userMenu.style.display = "none";
+  userMenu.style.visibility = "hidden";
+  userMenuBtn.classList.remove("active");
+}
+
 userMenuBtn.addEventListener("click", (event) => {
   event.stopPropagation();
   const currentlyHidden = userMenu.classList.contains("hidden");
@@ -125,11 +135,7 @@ userMenuBtn.addEventListener("click", (event) => {
     userMenu.style.visibility = "visible";
     userMenuBtn.classList.add("active");
   } else {
-    userMenu.classList.add("hidden");
-    userMenu.classList.remove("visible");
-    userMenu.style.display = "none";
-    userMenu.style.visibility = "hidden";
-    userMenuBtn.classList.remove("active");
+    closeUserMenu();
   }
 });
 
@@ -138,13 +144,15 @@ document.addEventListener("click", (event) => {
     !event.target.closest(".user-menu-wrapper") &&
     !userMenu.classList.contains("hidden")
   ) {
-    userMenu.classList.add("hidden");
-    userMenu.classList.remove("visible");
-    userMenu.style.display = "none";
-    userMenu.style.visibility = "hidden";
-    userMenuBtn.classList.remove("active");
+    closeUserMenu();
   }
 });
+
+if (pushToggleBtn) {
+  pushToggleBtn.addEventListener("click", () => {
+    closeUserMenu();
+  });
+}
 
 logoutBtn.addEventListener("click", () => {
   clearUserSession();
