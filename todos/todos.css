@@ -458,13 +458,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
+    width: 100%;
   }
 
-  .card-actions > button,
+  .card-actions > button {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
   .card-actions > .user-menu-wrapper {
     flex: 0 1 auto;
+    min-width: 0;
   }
 
   .user-menu-wrapper {
