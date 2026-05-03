@@ -1,6 +1,13 @@
 .todo-card {
   max-width: 100%;
   width: 100%;
+  position: relative;
+}
+
+.user-menu-wrapper {
+  position: absolute;
+  top: 28px;
+  right: 28px;
 }
 
 .todo-header {
@@ -19,10 +26,6 @@
   margin-top: 12px;
   color: #c6d4f0;
   font-size: 0.95rem;
-}
-
-.user-menu-wrapper {
-  position: relative;
 }
 
 .user-menu-btn {
@@ -439,6 +442,31 @@
   .todo-card {
     padding: 12px 8px;
     border-radius: 16px;
+  }
+
+  .todo-header {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .todo-header > div {
+    width: 100%;
+  }
+
+  .card-actions {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .user-menu-wrapper {
+    position: static;
+    width: auto;
+  }
+
+  .user-menu {
+    right: 0;
+    left: auto;
   }
 
   /* Layout a due righe su mobile */
