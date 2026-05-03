@@ -115,9 +115,18 @@ installBtn.addEventListener("click", async () => {
   deferredPrompt = null;
 });
 
-userMenuBtn.addEventListener("click", () => {
-  userMenu.classList.toggle("hidden");
-  userMenuBtn.classList.toggle("active");
+userMenuBtn.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const currentlyHidden = userMenu.classList.contains("hidden");
+  if (currentlyHidden) {
+    userMenu.classList.remove("hidden");
+    userMenu.style.display = "block";
+    userMenuBtn.classList.add("active");
+  } else {
+    userMenu.classList.add("hidden");
+    userMenu.style.display = "none";
+    userMenuBtn.classList.remove("active");
+  }
 });
 
 document.addEventListener("click", (event) => {
@@ -126,6 +135,7 @@ document.addEventListener("click", (event) => {
     !userMenu.classList.contains("hidden")
   ) {
     userMenu.classList.add("hidden");
+    userMenu.style.display = "none";
     userMenuBtn.classList.remove("active");
   }
 });
