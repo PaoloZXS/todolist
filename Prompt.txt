@@ -77,6 +77,8 @@ REGOLE UTENTE
 - Ogni utente può creare attività private visibili solo a sé stesso
 - Può spuntare FATTA/DA FARE qualsiasi voce
 - I todo FATTI devono rimanere in fondo e sottolineati
+- Quando un todo cambia stato FATTA/DA FARE, mostra un overlay di caricamento centrale con messaggio “Attendere, prego...” fino al completamento dell’operazione
+- L’amministratore paolo.giorsetti@codarini.com può accedere a una pagina admin separata per selezionare un utente registrato e correggere il suo gruppo
 
 SINCRONIZZAZIONE
 - Lista aggiornata automaticamente ogni 10 secondi
