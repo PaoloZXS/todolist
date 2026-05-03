@@ -224,6 +224,10 @@ function renderTodos(todos) {
   todosContainer.innerHTML = "";
   const pending = todos.filter((item) => item.status === "DA FARE");
   const done = todos.filter((item) => item.status === "FATTA");
+  const pendingLabel = document.querySelector(".section-pending");
+  if (pendingLabel) {
+    pendingLabel.textContent = `Attivita' da fare (${pending.length})`;
+  }
 
   if (pending.length) {
     pending.forEach((item) => todosContainer.appendChild(createTodoRow(item)));
