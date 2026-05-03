@@ -1,6 +1,6 @@
 // IMPORTANTE: incrementare la versione (v3 -> v4 -> v5 -> v6...) a ogni push/deploy
 // che modifica HTML/CSS/JS/manifest/icone, per forzare refresh corretto su mobile.
-const CACHE_NAME = "cose-da-fare-cache-v28";
+const CACHE_NAME = "cose-da-fare-cache-v32";
 const ASSETS = [
   "/",
   "/index.html",
@@ -15,6 +15,7 @@ const ASSETS = [
   "/js/session.js",
   "/js/turso-api.js",
   "/js/push.js",
+  "/js/app-version.js",
   "/manifest.json",
   "/assets/icons/icon-192.png",
   "/assets/icons/icon-512.png"
