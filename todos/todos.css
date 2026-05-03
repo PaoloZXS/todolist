@@ -462,7 +462,7 @@
   .card-actions {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 22px;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -470,20 +470,21 @@
 
   .card-actions > .user-menu-wrapper {
     order: -1;
-    width: auto;
-    align-self: center;
+    width: 100%;
+    align-self: stretch;
+    margin-bottom: 0;
   }
 
   .card-actions > button {
-    width: auto;
+    width: 100%;
     min-width: 0;
     white-space: normal;
-    align-self: center;
+    align-self: stretch;
   }
 
   .user-menu-wrapper {
     position: relative;
-    width: auto;
+    width: 100%;
   }
 
   .user-menu {
