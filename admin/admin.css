@@ -32,8 +32,8 @@
   margin-top: 8px;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(21, 28, 47, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #141b2f;
   color: #edf2ff;
   appearance: none;
 }

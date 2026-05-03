@@ -17,9 +17,7 @@ const adminPasswordInput = document.getElementById("adminPassword");
 const targetUserSelect = document.getElementById("targetUserSelect");
 const adminMessage = document.getElementById("adminMessage");
 
-window.addEventListener("load", () => {
-  loadAdminUsers();
-});
+window.addEventListener("load", loadAdminUsers);
 
 targetUserSelect.addEventListener("change", () => {
   const selectedOption = targetUserSelect.selectedOptions[0];

@@ -26,7 +26,6 @@ export default async function handler(req, res) {
   try {
     const body = await readJsonBody(req);
     const adminEmail = String(body.adminEmail || "").trim();
-    const adminPassword = String(body.adminPassword || "").trim();
 
     if (!adminEmail) {
       return sendJson(res, 400, {
@@ -41,20 +40,6 @@ export default async function handler(req, res) {
     }
 
     await ensureUserGroupColumn();
-
-    const adminLookup = await execute(
-      "SELECT password_hash FROM users WHERE username = ? LIMIT 1",
-      [adminEmail]
-    );
-
-    if (
-      !adminLookup.rows.length ||
-      adminLookup.rows[0].password_hash !== hashPassword(adminPassword)
-    ) {
-      return sendJson(res, 401, {
-        error: "Credenziali amministratore non valide."
-      });
-    }
 
     const usersResult = await execute(
       "SELECT username, group_name FROM users WHERE username != ? ORDER BY username",
