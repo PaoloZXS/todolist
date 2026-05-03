@@ -243,10 +243,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  transition: background 0.2s ease, opacity 0.2s ease;
 }
 
 .todo-actions button:hover {
   background: rgba(255, 255, 255, 0.12);
+}
+
+.todo-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.todo-actions button.loading {
+  color: transparent;
+}
+
+.todo-actions button.loading::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #edf2ff;
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .todo-row.section-label {

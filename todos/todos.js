@@ -277,7 +277,11 @@ function createTodoRow(item) {
   if (todoTitleElement) {
     todoTitleElement.addEventListener("click", () => openEditForm(item));
   }
-  row.querySelector(".delete-btn").addEventListener("click", async () => {
+  const deleteBtn = row.querySelector(".delete-btn");
+  const toggleBtn = row.querySelector(".toggle-btn");
+  const rowButtons = row.querySelectorAll(".todo-actions button");
+
+  deleteBtn.addEventListener("click", async () => {
     if (item.userId !== user.id && !isAdminUser) {
       showMessageModal(
         "Avviso cancellazione/modifica attività",
@@ -285,14 +289,31 @@ function createTodoRow(item) {
       );
       return;
     }
-    await deleteTodo(item.id, user.id);
-    await loadTodos();
+    rowButtons.forEach((btn) => (btn.disabled = true));
+    try {
+      await deleteTodo(item.id, user.id);
+      await loadTodos();
+    } catch (error) {
+      console.error("Errore eliminazione attività:", error);
+      alert("Errore durante l'eliminazione. Riprova.");
+      rowButtons.forEach((btn) => (btn.disabled = false));
+    }
   });
-  row.querySelector(".toggle-btn").addEventListener("click", async () => {
+
+  toggleBtn.addEventListener("click", async () => {
     const newStatus = item.status === "FATTA" ? "DA FARE" : "FATTA";
     const sourceEndpoint = await getCurrentPushSubscriptionEndpoint();
-    await toggleTodoStatus(item.id, newStatus, user.id, sourceEndpoint);
-    await loadTodos();
+    rowButtons.forEach((btn) => (btn.disabled = true));
+    toggleBtn.classList.add("loading");
+    try {
+      await toggleTodoStatus(item.id, newStatus, user.id, sourceEndpoint);
+      await loadTodos();
+    } catch (error) {
+      console.error("Errore toggle attività:", error);
+      alert("Errore durante l'aggiornamento. Riprova.");
+      rowButtons.forEach((btn) => (btn.disabled = false));
+      toggleBtn.classList.remove("loading");
+    }
   });
 
   return row;
