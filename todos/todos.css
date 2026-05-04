@@ -11,9 +11,13 @@
 }
 
 .todo-header {
+  display: flex;
   align-items: center;
-  justify-content: flex-start;
-  position: relative;
+  justify-content: space-between;
+  gap: 12px;
+}
+.todo-header > div:first-child {
+  min-width: 0;
 }
 .todo-header .page-title {
   font-size: 1.8rem;
@@ -21,18 +25,16 @@
 }
 
 .notification-status {
-  position: absolute;
-  top: 18px;
-  right: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: auto;
+  height: auto;
   padding: 0;
   border: none;
   color: #c6d4f0;
   background: transparent;
+  margin-left: auto;
 }
 .notification-status.active {
   color: #9ae6ff;
@@ -682,10 +684,12 @@
 
   /* Header */
   .todo-header {
+    display: flex;
     flex-direction: row;
     align-items: center;
     flex-wrap: nowrap;
     gap: 8px;
+    justify-content: space-between;
     margin-bottom: 8px;
   }
 
