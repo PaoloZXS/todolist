@@ -502,28 +502,39 @@
   }
 
   .todo-header {
-    justify-content: space-between;
+    position: relative;
+    justify-content: center;
     align-items: center;
-    text-align: left;
+    text-align: center;
   }
 
   .todo-header > div {
-    width: auto;
+    width: 100%;
     min-width: 0;
   }
 
   .todo-header .eyebrow {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: min(100%, calc(100% - 44px));
+    width: 100%;
+    margin: 0 auto;
   }
 
-  .card-actions > button {
-    margin-left: 24px;
+  .notification-status {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    margin-left: 0;
+  }
+
+  .card-actions {
+    align-items: flex-start;
   }
 
   .card-actions > .user-menu-wrapper {
@@ -537,42 +548,29 @@
     z-index: 3;
   }
 
-    .card-actions > button {
-      width: auto;
-      min-width: 0;
-      white-space: normal;
-      align-self: flex-start;
-      position: relative;
-      z-index: 1;
-      margin-top: 0;
-    }
+  .card-actions > button {
+    width: auto;
+    min-width: 0;
+    white-space: normal;
+    align-self: flex-start;
+    position: relative;
+    z-index: 1;
+    margin-top: 0;
+    margin-left: 0;
+  }
 
-    #addTodoBtn {
-      margin-top: 34px;
-    }
+  .user-menu {
+    left: 0;
+    right: auto;
+    top: calc(100% + 8px);
+    width: 100%;
+    z-index: 2000;
+  }
 
-    .user-menu-wrapper {
-      position: relative;
-      width: auto;
-    }
-
-    .user-menu-btn {
-      position: relative;
-      z-index: 3;
-    }
-
-    .user-menu {
-      left: 0;
-      right: auto;
-      top: calc(100% + 8px);
-      width: 100%;
-      z-index: 2000;
-    }
-
-    .user-menu.visible {
-      display: block !important;
-      visibility: visible !important;
-    }
+  .user-menu.visible {
+    display: block !important;
+    visibility: visible !important;
+  }
 
     /* Layout a due righe su mobile */
     .todo-row {
