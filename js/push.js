@@ -38,6 +38,18 @@ export async function getCurrentPushSubscriptionEndpoint() {
     return "";
   }
 }
+function updateNotificationIndicator(active) {
+  const indicator = document.getElementById("notificationStatus");
+  if (!indicator) return;
+  indicator.classList.toggle("active", active);
+  indicator.classList.toggle("inactive", !active);
+  indicator.title = active ? "Notifiche attive" : "Notifiche disattive";
+  const label = indicator.querySelector(".notification-label");
+  if (label) {
+    label.textContent = active ? "Attive" : "Disattive";
+  }
+}
+
 function updatePushButtonState(
   button,
   statusText,
@@ -60,6 +72,7 @@ function updatePushButtonState(
       status.textContent = statusText || "";
     }
   }
+  updateNotificationIndicator(active);
 }
 
 export async function initPushNotifications(user) {

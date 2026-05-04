@@ -11,11 +11,37 @@
 }
 
 .todo-header {
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
 }
 .todo-header .page-title {
   font-size: 1.8rem;
   white-space: nowrap;
+}
+
+.notification-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #c6d4f0;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.notification-status.active {
+  color: #9ae6ff;
+  background: rgba(42, 126, 215, 0.13);
+  border-color: rgba(42, 126, 215, 0.24);
+}
+.notification-status.inactive {
+  color: #a9b7d8;
+}
+.notification-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .card-actions {
