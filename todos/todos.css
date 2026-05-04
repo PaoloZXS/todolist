@@ -509,8 +509,7 @@
     padding-right: 44px;
   }
 
-  .todo-header > div {
-    width: 100%;
+  .todo-header > div:first-child {
     min-width: 0;
   }
 
