@@ -155,7 +155,7 @@ export async function initPushNotifications(user) {
     const nextActive = !active;
     showPushCenterToast(
       nextActive ? "Notifiche attivate" : "Notifiche disattivate",
-      nextActive ? "success" : "muted"
+      nextActive ? "success" : "danger"
     );
 
     try {

@@ -92,11 +92,15 @@
 }
 
 .push-center-toast.success {
-  border-color: rgba(94, 202, 141, 0.52);
+  border-color: rgba(94, 202, 141, 0.58);
+  background: rgba(18, 48, 31, 0.95);
+  color: #bcf4d8;
 }
 
-.push-center-toast.muted {
-  border-color: rgba(169, 183, 216, 0.48);
+.push-center-toast.danger {
+  border-color: rgba(226, 102, 102, 0.62);
+  background: rgba(64, 20, 20, 0.95);
+  color: #ffd0d0;
 }
 
 @media (max-width: 560px) {
