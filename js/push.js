@@ -152,6 +152,11 @@ export async function initPushNotifications(user) {
   pushButton.addEventListener("click", async () => {
     pushButton.disabled = true;
     const active = pushButton.dataset.pushActive === "true";
+    const nextActive = !active;
+    showPushCenterToast(
+      nextActive ? "Notifiche attivate" : "Notifiche disattivate",
+      nextActive ? "success" : "muted"
+    );
 
     try {
       const registration = await navigator.serviceWorker.ready;
@@ -161,7 +166,6 @@ export async function initPushNotifications(user) {
         await subscription.unsubscribe();
         await deletePushSubscription(subscription.endpoint);
         updatePushButtonState(pushButton, "", true, false);
-        showPushCenterToast("Notifiche disattivate", "muted");
         return;
       }
 
@@ -187,7 +191,6 @@ export async function initPushNotifications(user) {
         newSubscription
       );
       updatePushButtonState(pushButton, "", true, true);
-      showPushCenterToast("Notifiche attivate", "success");
     } catch (error) {
       console.error("Push subscription toggle failed:", error);
       updatePushButtonState(
