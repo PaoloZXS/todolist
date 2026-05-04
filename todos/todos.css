@@ -12,7 +12,8 @@
 
 .todo-header {
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  position: relative;
 }
 .todo-header .page-title {
   font-size: 1.8rem;
@@ -20,12 +21,14 @@
 }
 
 .notification-status {
+  position: absolute;
+  top: 18px;
+  right: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: auto;
-  min-width: auto;
-  height: auto;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: none;
   color: #c6d4f0;
