@@ -535,16 +535,19 @@
   }
 
   .card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     align-items: flex-start;
+    width: 100%;
   }
 
   .card-actions > .user-menu-wrapper {
     order: -1;
-    width: auto;
-    align-self: flex-start;
+    width: 100%;
+    align-self: stretch;
     display: block;
-    margin-bottom: 0;
-    margin-left: 0;
+    margin: 0;
     position: relative;
     z-index: 3;
   }
@@ -556,8 +559,7 @@
     align-self: flex-start;
     position: relative;
     z-index: 1;
-    margin-top: 0;
-    margin-left: 0;
+    margin: 0;
   }
 
   .user-menu {
