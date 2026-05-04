@@ -27,8 +27,6 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
 export async function getCurrentPushSubscriptionEndpoint() {
   try {
     const registration = await navigator.serviceWorker.ready;
@@ -58,9 +56,7 @@ function updatePushButtonState(
 ) {
   if (!button) return;
   button.disabled = !enabled;
-  button.textContent = active
-    ? "Disattiva notifiche"
-    : "Attiva notifiche";
+  button.textContent = active ? "Disattiva notifiche" : "Attiva notifiche";
   button.dataset.pushActive = active ? "true" : "false";
   button.classList.toggle("button-primary", active);
   button.classList.toggle("button-secondary", !active);
@@ -137,12 +133,7 @@ export async function initPushNotifications(user) {
       if (active && subscription) {
         await subscription.unsubscribe();
         await deletePushSubscription(subscription.endpoint);
-        updatePushButtonState(
-          pushButton,
-          "Notifiche disattivate.",
-          true,
-          false
-        );
+        updatePushButtonState(pushButton, "", true, false);
         return;
       }
 
@@ -167,10 +158,7 @@ export async function initPushNotifications(user) {
         user.groupName || "",
         newSubscription
       );
-      const successText = isMobile
-        ? "Notifiche attivate.<br/>Riceverai aggiornamenti di gruppo."
-        : "Notifiche attivate. Riceverai aggiornamenti di gruppo.";
-      updatePushButtonState(pushButton, successText, true, true);
+      updatePushButtonState(pushButton, "", true, true);
     } catch (error) {
       console.error("Push subscription toggle failed:", error);
       updatePushButtonState(
