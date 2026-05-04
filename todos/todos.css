@@ -260,8 +260,8 @@
 }
 
 .todo-row.done .todo-title {
-  text-decoration: underline;
-  text-decoration-color: rgba(93, 177, 255, 0.6);
+  text-decoration: line-through;
+  text-decoration-color: rgba(93, 177, 255, 0.65);
   text-decoration-thickness: 2px;
 }
 
