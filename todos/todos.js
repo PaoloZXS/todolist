@@ -304,7 +304,6 @@ function createTodoRow(item) {
         }
       </div>
       <div class="todo-actions">
-        <button class="icon-button edit-btn" title="Modifica" data-id="${item.id}">✏️</button>
         <button class="icon-button delete-btn" title="Elimina" data-id="${item.id}">🗑️</button>
         <button class="icon-button toggle-btn" title="Segna come ${item.status === "FATTA" ? "DA FARE" : "FATTA"}" data-id="${item.id}">${item.status === "FATTA" ? "↩️" : "✅"}</button>
       </div>
@@ -340,11 +339,6 @@ function createTodoRow(item) {
       hideLoading();
     }
   });
-
-  const editBtn = row.querySelector(".edit-btn");
-  if (editBtn) {
-    editBtn.addEventListener("click", () => openEditForm(item));
-  }
 
   toggleBtn.addEventListener("click", async () => {
     const newStatus = item.status === "FATTA" ? "DA FARE" : "FATTA";
