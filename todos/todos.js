@@ -13,7 +13,17 @@ import {
 } from "../js/push.js";
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js").catch(console.error);
+  let isReloadingForSwUpdate = false;
+  navigator.serviceWorker
+    .register("/service-worker.js")
+    .then((registration) => registration.update())
+    .catch(console.error);
+
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (isReloadingForSwUpdate) return;
+    isReloadingForSwUpdate = true;
+    window.location.reload();
+  });
 }
 
 const user = requireLogin();
