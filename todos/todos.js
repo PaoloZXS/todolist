@@ -135,27 +135,42 @@ function closeUserMenu() {
   userMenuBtn.classList.remove("active");
 }
 
-userMenuBtn.addEventListener("click", (event) => {
+function openUserMenu() {
+  userMenu.classList.remove("hidden");
+  userMenu.classList.add("visible");
+  userMenu.style.display = "block";
+  userMenu.style.visibility = "visible";
+  userMenuBtn.classList.add("active");
+}
+
+function toggleUserMenu(event) {
+  event.preventDefault();
   event.stopPropagation();
   const currentlyHidden = userMenu.classList.contains("hidden");
   if (currentlyHidden) {
-    userMenu.classList.remove("hidden");
-    userMenu.classList.add("visible");
-    userMenu.style.display = "block";
-    userMenu.style.visibility = "visible";
-    userMenuBtn.classList.add("active");
+    openUserMenu();
   } else {
     closeUserMenu();
   }
+}
+
+userMenuBtn.addEventListener("click", toggleUserMenu);
+userMenuBtn.addEventListener("touchstart", toggleUserMenu, {
+  passive: false
 });
 
-document.addEventListener("click", (event) => {
-  if (
-    !event.target.closest(".user-menu-wrapper") &&
-    !userMenu.classList.contains("hidden")
-  ) {
-    closeUserMenu();
+function closeMenuWhenClickingOutside(event) {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  if (target.closest(".user-menu-wrapper") || userMenu.classList.contains("hidden")) {
+    return;
   }
+  closeUserMenu();
+}
+
+document.addEventListener("click", closeMenuWhenClickingOutside);
+document.addEventListener("touchstart", closeMenuWhenClickingOutside, {
+  passive: true
 });
 
 if (pushToggleBtn) {
