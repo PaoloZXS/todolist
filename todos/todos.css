@@ -37,10 +37,10 @@
   margin-left: auto;
 }
 .notification-status.active {
-  color: #9ae6ff;
+  color: #5eca8d;
 }
 .notification-status.inactive {
-  color: #a9b7d8;
+  color: #e26666;
 }
 .notification-icon {
   width: 20px;
