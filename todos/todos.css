@@ -500,24 +500,21 @@
   }
 
   .todo-header {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
 
-  .todo-header > div {
-    width: 100%;
-  }
+    .todo-header > div {
+      width: auto;
+    }
 
-  .card-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 100%;
-  }
-
+    .todo-header .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      width: min(100%, calc(100% - 44px));
   .card-actions > button {
     margin-left: 24px;
   }
