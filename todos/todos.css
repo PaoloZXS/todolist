@@ -408,9 +408,9 @@
 }
 
 .todo-row.section-label.section-completed {
-  background: rgba(64, 178, 126, 0.14);
-  border-color: rgba(96, 212, 158, 0.28);
-  color: #b9efd5;
+  background: rgba(255, 95, 95, 0.14);
+  border-color: rgba(255, 125, 125, 0.28);
+  color: #ffd7d7;
 }
 
 .todo-row.empty-message {

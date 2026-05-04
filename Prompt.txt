@@ -1,159 +1,90 @@
-Voglio che tu generi un progetto completo per una PWA chiamata “GeoList”.
+Questo progetto è una PWA chiamata “GeoList” / “CosaDaFare” già sviluppata, con login, lista collaborativa, todo privati, backend API, admin e notifiche push.
 
-NOTA OPERATIVA CACHE PWA
-- Ad ogni push/deploy che tocca frontend o asset statici (HTML/CSS/JS/manifest/icone), incrementare sempre la versione in service-worker.js:
-  const CACHE_NAME = "cose-da-fare-cache-vX";
-- Esempio: v3 -> v4 -> v5 -> v6.
-- Obiettivo: forzare refresh corretto su mobile ed evitare cache vecchia.
-- Dopo ogni modifica al codice: ricordati sempre di fare git add, git commit e git push.
+INFORMAZIONI IMPORTANTI:
+- Dopo ogni modifica al codice: fare sempre git add, git commit e git push.
+- Aggiornare la versione dell’app ad ogni modifica rilevante: `js/app-version.js` deve riflettere la release corrente.
+- Per il caching della PWA, incrementare ogni volta anche `service-worker.js` su `const CACHE_NAME = "cose-da-fare-cache-vX"`.
+- Esiste uno script di release (`scripts/release.js`) e un git hook (`scripts/git-hook.js`) che aiutano a gestire il bump della versione di cache e l’auto-push.
 
-OBIETTIVO
-Creare una Progressive Web App installabile (scaricabile come app) che permetta a più utenti di:
-- registrarsi o fare login
-- essere riconosciuti in tutte le pagine
-- vedere una lista unica di “cose da fare” inserite da tutti gli utenti appartenenti alla stessa Azienda/Famiglia
-- aggiungere nuove cose da fare
-- creare attività private visibili solo all’utente che le ha inserite
-- modificare e cancellare solo le proprie voci (i todo privati restano esclusivi)
-- spuntare come FATTA/DA FARE qualsiasi voce in lista
-- vedere le cose FATTE spostate automaticamente in fondo e sottolineate
-- sincronizzare automaticamente la lista in background e al ritorno in primo piano
-- ricevere notifiche push di gruppo quando qualcuno aggiunge/modifica/completa un’attività
+OBIETTIVO DEL PROGETTO
+Costruire e mantenere una Progressive Web App installabile per la gestione di cose da fare condivise da utenti appartenenti alla stessa azienda/famiglia, con le seguenti funzionalità principali:
+- login / autenticazione e conservazione sessione utente
+- lista unificata di todo per gruppo
+- todo privati visibili solo all’utente che li crea
+- modifica/cancellazione consentite solo al proprietario dell’attività
+- toggle di stato FATTA/DA FARE
+- attività FATTE spostate in fondo e con decorazione visiva (barrato o underline)
+- sincronizzazione automatica e refresh al ritorno in primo piano
+- notifiche push di gruppo per azioni su todo
+- admin page separata per gestione utenti/gruppi
 
-STACK TECNICO
-- HTML + CSS + JavaScript (senza framework pesanti)
-- Ogni pagina deve avere il suo .html, .js e .css separati
-- Database: TURSO (usa funzioni JS con placeholder per URL e token)
-- PWA completa: manifest.json, service-worker.js, icone, caching offline
-- Web Push API nativa con chiavi VAPID e service worker
-- Pubblicabile su Vercel come sito statico
+ARCHITETTURA ATTUALE
+- Root:
+  - `index.html`
+  - `manifest.json`
+  - `service-worker.js`
+  - `js/app-version.js`
+  - `css/base.css`
+- Login:
+  - `login/login.html`
+  - `login/login.js`
+  - `login/login.css`
+- Todo:
+  - `todos/todos.html`
+  - `todos/todos.js`
+  - `todos/todos.css`
+- Admin:
+  - `admin/admin.html`
+  - `admin/admin.js`
+  - `admin/admin.css`
+- API backend:
+  - `api/*.js`
+  - `api/todos/*.js`
+  - `api/push-*.js`
+  - `api/_db.js`, `api/_helpers.js`
 
-STRUTTURA DEL PROGETTO
-Crea questa struttura:
-
-project-root/
-  index.html
-  /login/
-    login.html
-    login.js
-    login.css
-  /todos/
-    todos.html
-    todos.js
-    todos.css
-  /js/
-    turso-api.js
-    session.js
-    push.js
-  /assets/icons/
-    icon-192.png
-    icon-512.png
-  manifest.json
-  service-worker.js
-
-REQUISITI FUNZIONALI
-
+FUNZIONALITÀ CHIAVE
 LOGIN
-- Pagina login.html con username, password e Azienda/Famiglia
-- Funzione loginUser() in turso-api.js
-- Dopo login, salva l’utente in session.js (localStorage)
-- Se l’utente non è loggato, reindirizza sempre a login.html
+- login via pagina `login/login.html`.
+- sessione utente salvata in `localStorage` via `js/session.js`.
+- redirect automatico a login se l’utente non è autenticato.
 
-LISTA COSE DA FARE
-Ogni elemento deve contenere:
-- data di inserimento
-- descrizione
-- utente che l’ha inserita
-- stato: FATTA / DA FARE
-- badge privato se isPrivate è attivo
+TODO
+- ogni todo contiene data, testo, utente creatore, stato e visibilità privata.
+- i todo sono filtrati per gruppo e mostrano anche i privati dell’utente loggato.
+- le attività completate sono separate visivamente e appaiono in fondo.
+- le attività completate devono avere una decorazione evidente (barrato/underline colorato).- la modifica delle attività avviene tramite click sulla riga / sul testo del todo, non tramite un’icona di edit separata.
+ADMIN
+- la pagina admin permette di selezionare un utente registrato, vedere i suoi dati e aggiornare il gruppo.
+- l’accesso admin deve essere controllato lato frontend/backend.
 
-Ogni riga deve avere 3 icone:
-- modifica
-- cancella
-- toggle FATTA/DA FARE
+PUSH E SYNC
+- notifiche push basate su Web Push API e Service Worker.
+- l’utente può attivare/disattivare le notifiche da interfaccia.
+- le sottoscrizioni vengono salvate e cancellate tramite API dedicate.
+- ogni modifica/add/completamento di un todo invia notifiche al gruppo.
+- la PWA deve registrare il service worker in `index.html`.
 
-REGOLE UTENTE
-- Ogni utente può modificare/cancellare solo le proprie voci
-- Ogni utente può creare attività private visibili solo a sé stesso
-- Può spuntare FATTA/DA FARE qualsiasi voce
-- I todo FATTI devono rimanere in fondo e sottolineati
-- Quando un todo cambia stato FATTA/DA FARE, mostra un overlay di caricamento centrale con messaggio “Attendere, prego...” fino al completamento dell’operazione
-- L’amministratore paolo.giorsetti@codarini.com può accedere a una pagina admin separata per selezionare un utente registrato e correggere il suo gruppo
+VERSIONE E DEPLOY
+- `js/app-version.js` contiene `APP_VERSION` visibile nell’interfaccia.
+- `service-worker.js` utilizza `CACHE_NAME` con versione incrementale.
+- ad ogni aggiornamento frontend/statico, incrementare la versione cache e aggiornare il version display.
+- dopo ogni modifica, eseguire commit e push obbligatori.
 
-SINCRONIZZAZIONE
-- Lista aggiornata automaticamente ogni 10 secondi
-- Lista ricaricata al ritorno in primo piano
-- Il backend deve restituire solo i todo del gruppo e quelli privati dell’utente
+NOTE DI IMPLEMENTAZIONE
+- non usare framework pesanti: HTML/CSS/JS plain.
+- mantenere la struttura a moduli con file separati per pagina.
+- non inserire token reali nei file pubblici.
+- il progetto deve rimanere pronto per deploy su GitHub/Vercel.
 
-COLORI E UI
-- Nessun colore rosa, fucsia, giallo
-- Palette tecnica: grigi, blu, toni neutri
-- Stile moderno, leggibile, professionale
+RISULTATI ATTESI
+Aggiornare e mantenere il prompt in `Prompt.txt` in modo che combaci con il codice reale.
+Il prompt deve includere:
+- descrizione del progetto come esistente
+- struttura di file corrente
+- regole di commit/push/versione
+- dettagli sulla PWA, admin, API e push
+- avviso sul bump di `service-worker.js` e `js/app-version.js` ad ogni modifica
 
-PWA (INSTALLABILE)
-Genera:
-- manifest.json completo (nome, short_name, icone, colori, start_url, display standalone)
-- service-worker.js con caching statico e supporto per refresh corretto su mobile
-- registrazione del service worker in index.html
-- bottone “📲 Scarica App” che appare quando la PWA è installabile (gestione beforeinstallprompt)
-- aggiornamento della versione cache ad ogni deploy
-
-NOTIFICHE PUSH
-Implementa notifiche push usando solo:
-- Web Push API
-- Service Worker
-- chiavi VAPID
-
-Deve funzionare così:
-- ogni utente può attivare le notifiche cliccando “🔔 Attiva notifiche”
-- la sottoscrizione viene salvata su Turso con endpoint, keys.p256dh, keys.auth, userId, groupName
-- quando un utente aggiunge/modifica/completa un todo, invia una notifica a tutti gli altri utenti dello stesso groupName
-- la notifica deve arrivare anche se l’app è chiusa
-
-TURSO
-In turso-api.js crea funzioni con placeholder:
-- loginUser(username, password, groupName)
-- getTodos(userId, groupName)
-- addTodo(text, userId, isPrivate, sourceEndpoint)
-- updateTodo(id, text, actingUserId, isPrivate, sourceEndpoint)
-- deleteTodo(id, actingUserId)
-- toggleTodoStatus(id, status, sourceEndpoint)
-- savePushSubscription(userId, groupName, subscription)
-- getGroupSubscriptions(groupName)
-- sendPushNotification(subscription, title, body)
-
-Non inserire token reali, usa:
-const TURSO_DB_URL = "INSERISCI_URL";
-const TURSO_DB_TOKEN = "INSERISCI_TOKEN";
-
-OUTPUT RICHIESTO
-Genera TUTTI i file completi:
-- index.html
-- login.html + login.js + login.css
-- todos.html + todos.js + todos.css
-- base.css
-- turso-api.js
-- session.js
-- push.js
-- manifest.json
-- service-worker.js
-- icone minime (puoi generare versioni base in PNG)
-- eventuali helper JS
-
-Il codice deve essere completo, funzionante e pronto da caricare su GitHub e Vercel.
-
-
-USA L’IMMAGINE CHE TI HO ALLEGATO COME RIFERIMENTO VISIVO OBBLIGATORIO.
-Riproduci fedelmente:
-- colori
-- stile tecnico
-- layout della tabella
-- posizione delle icone
-- stile del bottone blu
-- header con saluto
-- separazione tra attività da fare e fatte
-- Underline delle attività completate
-
-Tutti i file HTML, CSS e JS devono rispettare questo stile grafico.
-
+Questa versione del prompt è lo stato aggiornato e allineato al progetto. Mantieni queste regole per tutte le modifiche future.
 
