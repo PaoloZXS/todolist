@@ -1,6 +1,33 @@
 import { savePushSubscription, deletePushSubscription } from "./turso-api.js";
 
 const VAPID_PLACEHOLDER = "INSERISCI_VAPID_PUBLIC_KEY";
+let pushCenterToastTimer = null;
+
+function ensurePushCenterToast() {
+  let toast = document.getElementById("pushCenterToast");
+  if (toast) return toast;
+
+  toast = document.createElement("div");
+  toast.id = "pushCenterToast";
+  toast.className = "push-center-toast";
+  document.body.appendChild(toast);
+  return toast;
+}
+
+function showPushCenterToast(message, tone = "success") {
+  const toast = ensurePushCenterToast();
+  toast.textContent = message;
+  toast.classList.remove("success", "muted", "active");
+  toast.classList.add(tone, "active");
+
+  if (pushCenterToastTimer) {
+    clearTimeout(pushCenterToastTimer);
+  }
+
+  pushCenterToastTimer = window.setTimeout(() => {
+    toast.classList.remove("active");
+  }, 1700);
+}
 
 async function fetchVapidPublicKey() {
   try {
@@ -134,6 +161,7 @@ export async function initPushNotifications(user) {
         await subscription.unsubscribe();
         await deletePushSubscription(subscription.endpoint);
         updatePushButtonState(pushButton, "", true, false);
+        showPushCenterToast("Notifiche disattivate", "muted");
         return;
       }
 
@@ -159,6 +187,7 @@ export async function initPushNotifications(user) {
         newSubscription
       );
       updatePushButtonState(pushButton, "", true, true);
+      showPushCenterToast("Notifiche attivate", "success");
     } catch (error) {
       console.error("Push subscription toggle failed:", error);
       updatePushButtonState(
