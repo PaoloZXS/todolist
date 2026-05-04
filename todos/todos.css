@@ -23,18 +23,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  min-width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: auto;
+  min-width: auto;
+  height: auto;
+  padding: 0;
+  border: none;
   color: #c6d4f0;
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
 }
 .notification-status.active {
   color: #9ae6ff;
-  background: rgba(42, 126, 215, 0.16);
-  border-color: rgba(42, 126, 215, 0.24);
 }
 .notification-status.inactive {
   color: #a9b7d8;
