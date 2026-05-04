@@ -130,21 +130,16 @@ function closeUserMenu() {
   if (userMenu.classList.contains("hidden")) return;
   userMenu.classList.add("hidden");
   userMenu.classList.remove("visible");
-  userMenu.style.display = "none";
-  userMenu.style.visibility = "hidden";
   userMenuBtn.classList.remove("active");
 }
 
 function openUserMenu() {
   userMenu.classList.remove("hidden");
   userMenu.classList.add("visible");
-  userMenu.style.display = "block";
-  userMenu.style.visibility = "visible";
   userMenuBtn.classList.add("active");
 }
 
 function toggleUserMenu(event) {
-  event.preventDefault();
   event.stopPropagation();
   const currentlyHidden = userMenu.classList.contains("hidden");
   if (currentlyHidden) {
@@ -155,23 +150,20 @@ function toggleUserMenu(event) {
 }
 
 userMenuBtn.addEventListener("click", toggleUserMenu);
-userMenuBtn.addEventListener("touchstart", toggleUserMenu, {
-  passive: false
-});
 
 function closeMenuWhenClickingOutside(event) {
   const target = event.target;
   if (!(target instanceof Element)) return;
-  if (target.closest(".user-menu-wrapper") || userMenu.classList.contains("hidden")) {
+  if (
+    target.closest(".user-menu-wrapper") ||
+    userMenu.classList.contains("hidden")
+  ) {
     return;
   }
   closeUserMenu();
 }
 
 document.addEventListener("click", closeMenuWhenClickingOutside);
-document.addEventListener("touchstart", closeMenuWhenClickingOutside, {
-  passive: true
-});
 
 if (pushToggleBtn) {
   pushToggleBtn.addEventListener("click", () => {

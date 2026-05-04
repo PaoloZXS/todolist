@@ -584,10 +584,12 @@
   }
 
   .user-menu {
+    position: static;
     left: 0;
     right: auto;
-    top: calc(100% + 8px);
+    top: auto;
     width: 100%;
+    margin-top: 8px;
     z-index: 2000;
   }
 
