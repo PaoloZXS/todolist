@@ -295,7 +295,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: background 0.2s ease, opacity 0.2s ease;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .todo-actions button:hover {
@@ -500,21 +502,26 @@
   }
 
   .todo-header {
-      justify-content: space-between;
-      align-items: center;
-      text-align: left;
-    }
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
 
-    .todo-header > div {
-      width: auto;
-    }
+  .todo-header > div {
+    width: auto;
+    min-width: 0;
+  }
 
-    .todo-header .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 10px;
-      width: min(100%, calc(100% - 44px));
+  .todo-header .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: min(100%, calc(100% - 44px));
+  }
+
   .card-actions > button {
     margin-left: 24px;
   }
@@ -525,237 +532,239 @@
     align-self: flex-start;
     display: block;
     margin-bottom: 0;
-    margin-left: 47px;
+    margin-left: 0;
     position: relative;
     z-index: 3;
   }
 
-  .card-actions > button {
-    width: auto;
-    min-width: 0;
-    white-space: normal;
-    align-self: flex-start;
-    position: relative;
-    z-index: 1;
-    margin-top: 0;
-  }
+    .card-actions > button {
+      width: auto;
+      min-width: 0;
+      white-space: normal;
+      align-self: flex-start;
+      position: relative;
+      z-index: 1;
+      margin-top: 0;
+    }
 
-  #addTodoBtn {
-    margin-top: 34px;
-  }
+    #addTodoBtn {
+      margin-top: 34px;
+    }
 
-  .user-menu-wrapper {
-    position: relative;
-    width: auto;
-  }
+    .user-menu-wrapper {
+      position: relative;
+      width: auto;
+    }
 
-  .user-menu-btn {
-    position: relative;
-    z-index: 3;
-  }
+    .user-menu-btn {
+      position: relative;
+      z-index: 3;
+    }
 
-  .user-menu {
-    left: 0;
-    right: auto;
-    top: calc(100% + 8px);
-    width: 100%;
-    z-index: 2000;
-  }
+    .user-menu {
+      left: 0;
+      right: auto;
+      top: calc(100% + 8px);
+      width: 100%;
+      z-index: 2000;
+    }
 
-  .user-menu.visible {
-    display: block !important;
-    visibility: visible !important;
-  }
+    .user-menu.visible {
+      display: block !important;
+      visibility: visible !important;
+    }
 
-  /* Layout a due righe su mobile */
-  .todo-row {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.02);
-  }
+    /* Layout a due righe su mobile */
+    .todo-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
 
-  .todo-row.header {
-    display: none;
-  }
+    .todo-row.header {
+      display: none;
+    }
 
-  .todo-row.section-label {
-    display: block;
-  }
+    .todo-row.section-label {
+      display: block;
+    }
 
-  /* Riga 1: data sinistra + utente a seguire con gap */
-  .todo-row .todo-meta {
-    display: flex !important;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    width: 100%;
-  }
+    /* Riga 1: data sinistra + utente a seguire con gap */
+    .todo-row .todo-meta {
+      display: flex !important;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
 
-  .todo-date {
-    font-size: 0.78rem;
-    color: var(--muted);
-    flex-shrink: 0;
-  }
+    .todo-date {
+      font-size: 0.78rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
 
-  .todo-owner {
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
+    .todo-owner {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
 
-  /* Riga 2: descrizione + icone sulla stessa riga */
-  .todo-title {
-    font-size: 0.95rem;
-    font-weight: 500;
-    line-height: 1.4;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-  }
+    /* Riga 2: descrizione + icone sulla stessa riga */
+    .todo-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.4;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
 
-  .todo-created,
-  .todo-updated {
-    font-size: 0.82rem;
-    color: var(--muted);
-    min-width: 0;
-  }
+    .todo-created,
+    .todo-updated {
+      font-size: 0.82rem;
+      color: var(--muted);
+      min-width: 0;
+    }
 
-  /* Riga 2 wrapper: testo sinistra + icone destra */
-  .todo-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    gap: 8px 12px;
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.02);
-  }
+    /* Riga 2 wrapper: testo sinistra + icone destra */
+    .todo-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 8px 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
 
-  .todo-row .todo-meta {
-    grid-column: 1 / -1;
-    display: flex !important;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    width: 100%;
-  }
+    .todo-row .todo-meta {
+      grid-column: 1 / -1;
+      display: flex !important;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
 
-  .todo-row .todo-body {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px;
-    width: 100%;
-    min-width: 0;
-  }
+    .todo-row .todo-body {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      width: 100%;
+      min-width: 0;
+    }
 
-  /* Icone sulla destra della descrizione */
-  .todo-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 6px;
-    flex-shrink: 0;
-    align-self: start;
-    justify-self: end;
-    padding-top: 4px;
-    margin: 0;
-  }
+    /* Icone sulla destra della descrizione */
+    .todo-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+      align-self: start;
+      justify-self: end;
+      padding-top: 4px;
+      margin: 0;
+    }
 
-  .todo-content {
-    padding-right: 0;
-    gap: 4px;
-    width: 100%;
-    min-width: 0;
-  }
+    .todo-content {
+      padding-right: 0;
+      gap: 4px;
+      width: 100%;
+      min-width: 0;
+    }
 
-  .todo-actions button {
-    width: 36px;
-    height: 36px;
-    font-size: 15px;
-    border-radius: 10px;
-  }
+    .todo-actions button {
+      width: 36px;
+      height: 36px;
+      font-size: 15px;
+      border-radius: 10px;
+    }
 
-  /* Header */
-  .todo-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 8px;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
+    /* Header */
+    .todo-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
 
-  .todo-header .eyebrow {
-    display: block;
-    color: #eef2ff;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    margin: 0;
-  }
+    .todo-header .eyebrow {
+      display: block;
+      color: #eef2ff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin: 0;
+    }
 
-  .todo-header .page-title { display: none; }
+    .todo-header .page-title {
+      display: none;
+    }
 
-  .app-version {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.08);
-    color: #d8e2ff;
-    font-size: 0.78rem;
-    font-weight: 600;
-    line-height: 1.5;
-    padding: 2px 8px;
-    border-radius: 999px;
-    margin-left: 10px;
-  }
+    .app-version {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      color: #d8e2ff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.5;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 10px;
+    }
 
-  .card-actions {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-    margin: 12px 0 14px;
-  }
+    .card-actions {
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+      margin: 12px 0 14px;
+    }
 
-  .card-actions .button {
-    width: auto;
-    justify-content: flex-start;
-    padding: 12px;
-  }
+    .card-actions .button {
+      width: auto;
+      justify-content: flex-start;
+      padding: 12px;
+    }
 
-  #addTodoBtn {
-    min-width: 0;
-    padding: 10px 14px;
-  }
+    #addTodoBtn {
+      min-width: 0;
+      padding: 10px 14px;
+    }
 
-  #installBtn {
-    display: none !important;
-  }
+    #installBtn {
+      display: none !important;
+    }
 
-  /* Modal */
-  .modal {
-    padding: 18px 14px;
-    border-radius: 18px;
-  }
+    /* Modal */
+    .modal {
+      padding: 18px 14px;
+      border-radius: 18px;
+    }
 
-  .form-actions {
-    flex-direction: column-reverse;
-    gap: 8px;
-  }
+    .form-actions {
+      flex-direction: column-reverse;
+      gap: 8px;
+    }
 
-  .form-actions .button {
-    width: 100%;
-    justify-content: center;
-  }
+    .form-actions .button {
+      width: 100%;
+      justify-content: center;
+    }
 
-  .todo-row.empty-message {
-    white-space: normal;
+    .todo-row.empty-message {
+      white-space: normal;
+    }
   }
-}
 
   /* Modal */
   .modal {
