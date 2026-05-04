@@ -22,18 +22,18 @@
 .notification-status {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 14px;
+  justify-content: center;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #c6d4f0;
   background: rgba(255, 255, 255, 0.04);
-  font-size: 0.9rem;
-  font-weight: 600;
 }
 .notification-status.active {
   color: #9ae6ff;
-  background: rgba(42, 126, 215, 0.13);
+  background: rgba(42, 126, 215, 0.16);
   border-color: rgba(42, 126, 215, 0.24);
 }
 .notification-status.inactive {
