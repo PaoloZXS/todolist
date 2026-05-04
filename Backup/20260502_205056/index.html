@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoList</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <meta name="theme-color" content="#293248" />
+  </head>
+  <body class="app-shell">
+    <main class="center-shell">
+      <section class="card card-compact">
+        <div class="header-row">
+          <div>
+            <p class="eyebrow">GeoList</p>
+            <h1 class="page-title">Benvenuto</h1>
+          </div>
+        </div>
+        <p class="intro-text">
+          Apri la tua lista condivisa di attività e gestisci i tuoi impegni.
+        </p>
+        <div class="actions-row">
+          <a
+            id="entryButton"
+            class="button button-primary"
+            href="./login/login.html"
+            >Carica App</a
+          >
+          <a class="button button-secondary" href="./login/login.html">Login</a>
+          <button id="installBtnHome" class="button button-secondary">
+            📲 Installa App
+          </button>
+        </div>
+      </section>
+    </main>
+    <script type="module">
+      import { getCurrentUser } from "/js/session.js";
+      const entryButton = document.getElementById("entryButton");
+      const installBtnHome = document.getElementById("installBtnHome");
+      const user = getCurrentUser();
+      let deferredPrompt = null;
+
+      const isStandalone =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone;
+
+      function getInstallHint() {
+        const ua = navigator.userAgent.toLowerCase();
+        if (ua.includes("edg/")) {
+          return "Edge: menu ⋯ > App > Installa questo sito come app.";
+        }
+        if (ua.includes("chrome")) {
+          return "Chrome: menu ⋮ > Trasmetti, salva e condividi > Installa pagina come app.";
+        }
+        if (ua.includes("firefox")) {
+          return "Firefox desktop non supporta il prompt PWA standard. Usa Chrome o Edge per installare.";
+        }
+        return "Questo browser potrebbe non supportare l'installazione PWA automatica.";
+      }
+
+      if (isStandalone) {
+        installBtnHome.classList.add("hidden");
+      }
+
+      if (user) {
+        entryButton.textContent = "Vai alla lista";
+        entryButton.href = "./todos/todos.html";
+      } else {
+        entryButton.textContent = "Login / Registrati";
+        entryButton.href = "./login/login.html";
+      }
+
+      // Debug PWA installation
+      console.log("[PWA] isStandalone:", isStandalone);
+      console.log("[PWA] beforeinstallprompt awaiting...");
+
+      window.addEventListener("beforeinstallprompt", (event) => {
+        console.log("[PWA] beforeinstallprompt RECEIVED ✅");
+        event.preventDefault();
+        deferredPrompt = event;
+      });
+
+      window.addEventListener(
+        "beforeinstallprompt",
+        () => {
+          console.log("[PWA] beforeinstallprompt event fired");
+        },
+        { once: false }
+      );
+
+      installBtnHome.addEventListener("click", async () => {
+        console.log("[PWA] Install button clicked");
+        console.log("[PWA] deferredPrompt:", deferredPrompt);
+        if (!deferredPrompt) {
+          console.log("[PWA] No deferredPrompt, showing fallback");
+          alert(getInstallHint());
+          return;
+        }
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      });
+
+      window.addEventListener("appinstalled", () => {
+        console.log("[PWA] App installed! 🎉");
+        deferredPrompt = null;
+        installBtnHome.classList.add("hidden");
+      });
+
+      if ("serviceWorker" in navigator) {
+        console.log("[PWA] Service Worker supported");
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => {
+              console.log("[PWA] Service Worker registered ✅", reg);
+              console.log("[PWA] SW active:", reg.active);
+              console.log("[PWA] SW installing:", reg.installing);
+              console.log("[PWA] SW waiting:", reg.waiting);
+            })
+            .catch((err) => {
+              console.error("[PWA] Service Worker registration failed ❌", err);
+            });
+        });
+      } else {
+        console.log("[PWA] Service Worker NOT supported ❌");
+      }
+
+      // Check manifest
+      fetch("/manifest.json")
+        .then((res) => {
+          console.log("[PWA] Manifest fetch status:", res.status);
+          return res.json();
+        })
+        .then((manifest) => {
+          console.log("[PWA] Manifest loaded ✅:", manifest);
+        })
+        .catch((err) => {
+          console.error("[PWA] Manifest fetch failed ❌", err);
+        });
+
+      // Check icons
+      Promise.all([
+        fetch("/assets/icons/icon-192.png"),
+        fetch("/assets/icons/icon-512.png")
+      ])
+        .then((responses) => {
+          console.log(
+            "[PWA] Icons status:",
+            responses.map((r) => r.status)
+          );
+        })
+        .catch((err) => {
+          console.error("[PWA] Icons fetch failed ❌", err);
+        });
+    </script>
+  </body>
+</html>

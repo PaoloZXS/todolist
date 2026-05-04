@@ -1,0 +1,10 @@
+{
+  "name": "cose-da-fare",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "web-push": "^3.6.7"
+  }
+}

@@ -7,8 +7,15 @@
 }
 
 .actions-row {
+  display: flex;
+  flex-wrap: wrap; /* Permette ai pulsanti di andare a capo se necessario */
   justify-content: space-between;
   gap: 12px;
+}
+
+.button {
+  flex: 1; /* Assicura che i pulsanti abbiano la stessa larghezza */
+  max-width: 48%; /* Limita la larghezza massima per evitare sovrapposizioni */
 }
 
 .note-text {
@@ -51,8 +58,10 @@ input[type="password"] {
 @media (max-width: 520px) {
   .actions-row {
     flex-direction: column;
+    gap: 10px; /* Aggiunge uno spazio tra i pulsanti */
   }
   .button {
     width: 100%;
+    margin-bottom: 10px; /* Aggiunge margine inferiore per separare i pulsanti */
   }
 }

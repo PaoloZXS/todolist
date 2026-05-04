@@ -1,0 +1,26 @@
+{
+  "name": "GeoList",
+  "short_name": "GeoList",
+  "description": "Una PWA per gestire attività condivise con login, stato e azioni per ogni utente.",
+  "id": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "prefer_related_applications": false,
+  "background_color": "#1e2734",
+  "theme_color": "#293248",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
