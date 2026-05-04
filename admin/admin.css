@@ -8,14 +8,13 @@
 
 .actions-row {
   display: flex;
-  flex-wrap: wrap; /* Permette ai pulsanti di andare a capo se necessario */
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column; /* Disposizione verticale dei pulsanti */
+  align-items: flex-start; /* Allinea i pulsanti a sinistra */
+  gap: 10px; /* Spaziatura tra i pulsanti */
 }
 
 .button {
-  flex: 1; /* Assicura che i pulsanti abbiano la stessa larghezza */
-  max-width: 48%; /* Limita la larghezza massima per evitare sovrapposizioni */
+  width: auto; /* Imposta la larghezza automatica per evitare sovrapposizioni */
 }
 
 .note-text {
