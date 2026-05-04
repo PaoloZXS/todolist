@@ -305,7 +305,6 @@ function createTodoRow(item) {
   row.innerHTML = `
     <div class="todo-meta">
       <span class="todo-date">${item.createdAt}</span>
-      <span class="todo-status">${item.status}</span>
     </div>
     <div class="todo-body">
       <div class="todo-content">
