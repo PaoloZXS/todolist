@@ -263,11 +263,10 @@
   text-decoration: line-through;
   text-decoration-color: rgba(93, 177, 255, 0.65);
   text-decoration-thickness: 2px;
-  color: rgba(93, 177, 255, 0.4);
 }
 
 .todo-row.done .todo-text {
-  color: rgba(93, 177, 255, 0.4);
+  color: var(--text);
 }
 
 .todo-status {
