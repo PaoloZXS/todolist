@@ -17,7 +17,7 @@ function ensurePushCenterToast() {
 function showPushCenterToast(message, tone = "success") {
   const toast = ensurePushCenterToast();
   toast.textContent = message;
-  toast.classList.remove("success", "muted", "active");
+  toast.classList.remove("success", "danger", "muted", "active");
   toast.classList.add(tone, "active");
 
   if (pushCenterToastTimer) {
