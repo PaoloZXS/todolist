@@ -284,6 +284,7 @@ function createSectionLabel(text, typeClass = "") {
 function createTodoRow(item) {
   const row = document.createElement("div");
   row.className = `todo-row${item.status === "FATTA" ? " done" : ""}`;
+  row.title = "Clicca per modificare";
   row.innerHTML = `
     <div class="todo-meta">
       <span class="todo-date">${item.createdAt}</span>
