@@ -514,15 +514,15 @@
   }
 
   .todo-header .eyebrow {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: auto;
-    max-width: calc(100% - 44px);
+    flex-wrap: wrap;
+    white-space: normal;
+    overflow: visible;
+    width: 100%;
+    padding-right: 44px;
     margin: 0;
   }
 
