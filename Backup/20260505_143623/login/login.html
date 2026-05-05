@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoList</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="login.css" />
+    <meta name="theme-color" content="#293248" />
+  </head>
+  <body class="login-shell">
+    <main class="center-shell">
+      <section class="card card-compact login-card">
+        <div class="header-row">
+          <div>
+            <p class="eyebrow">Accesso</p>
+            <h1 class="page-title">Entra nella tua lista</h1>
+          </div>
+        </div>
+        <p class="intro-text">
+          Inserisci username, password e gruppo di appartenenza della lista.
+        </p>
+        <form id="loginForm" class="form-shell">
+          <label>
+            Nome utente
+            <input type="text" id="username" autocomplete="username" required />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              id="password"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+          <label>
+            Azienda / Famiglia
+            <input
+              type="text"
+              id="groupName"
+              autocomplete="organization"
+              required
+              placeholder="Es. Famiglia Rossi"
+            />
+            <p class="hint-text">
+              Attenzione: il gruppo viene salvato con l'utente e non può essere
+              cambiato dopo l'accesso.
+            </p>
+          </label>
+          <div class="actions-row">
+            <button type="submit" class="button button-primary">Accedi</button>
+            <a class="button button-secondary" href="../index.html"
+              >Torna indietro</a
+            >
+          </div>
+        </form>
+        <p id="loginMessage" class="note-text"></p>
+      </section>
+    </main>
+    <script type="module" src="login.js"></script>
+  </body>
+</html>

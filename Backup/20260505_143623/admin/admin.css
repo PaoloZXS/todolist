@@ -1,0 +1,66 @@
+.login-card {
+  max-width: 540px;
+}
+
+.form-shell {
+  margin-top: 18px;
+}
+
+.actions-row {
+  display: flex;
+  flex-direction: column; /* Disposizione verticale dei pulsanti */
+  align-items: flex-start; /* Allinea i pulsanti a sinistra */
+  gap: 10px; /* Spaziatura tra i pulsanti */
+}
+
+.button {
+  width: auto; /* Imposta la larghezza automatica per evitare sovrapposizioni */
+}
+
+.note-text {
+  margin-top: 18px;
+  color: #ccd6f8;
+  display: none;
+}
+
+.user-list-shell {
+  margin-top: 18px;
+}
+
+.user-list-shell .hint-text {
+  display: block;
+  margin-bottom: 12px;
+  color: #b8f1c8;
+}
+
+.user-list-shell select {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #141b2f;
+  color: #edf2ff;
+  appearance: none;
+}
+
+.user-list-shell select option {
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+input[type="text"],
+input[type="password"] {
+  margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+  .actions-row {
+    flex-direction: column;
+    gap: 10px; /* Aggiunge uno spazio tra i pulsanti */
+  }
+  .button {
+    width: 100%;
+    margin-bottom: 10px; /* Aggiunge margine inferiore per separare i pulsanti */
+  }
+}

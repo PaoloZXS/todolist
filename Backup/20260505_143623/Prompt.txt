@@ -1,0 +1,90 @@
+Questo progetto è una PWA chiamata “GeoList” / “CosaDaFare” già sviluppata, con login, lista collaborativa, todo privati, backend API, admin e notifiche push.
+
+INFORMAZIONI IMPORTANTI:
+- Dopo ogni modifica al codice: fare sempre git add, git commit e git push.
+- Aggiornare la versione dell’app ad ogni modifica rilevante: `js/app-version.js` deve riflettere la release corrente.
+- Per il caching della PWA, incrementare ogni volta anche `service-worker.js` su `const CACHE_NAME = "cose-da-fare-cache-vX"`.
+- Esiste uno script di release (`scripts/release.js`) e un git hook (`scripts/git-hook.js`) che aiutano a gestire il bump della versione di cache e l’auto-push.
+
+OBIETTIVO DEL PROGETTO
+Costruire e mantenere una Progressive Web App installabile per la gestione di cose da fare condivise da utenti appartenenti alla stessa azienda/famiglia, con le seguenti funzionalità principali:
+- login / autenticazione e conservazione sessione utente
+- lista unificata di todo per gruppo
+- todo privati visibili solo all’utente che li crea
+- modifica/cancellazione consentite solo al proprietario dell’attività
+- toggle di stato FATTA/DA FARE
+- attività FATTE spostate in fondo e con decorazione visiva (barrato o underline)
+- sincronizzazione automatica e refresh al ritorno in primo piano
+- notifiche push di gruppo per azioni su todo
+- admin page separata per gestione utenti/gruppi
+
+ARCHITETTURA ATTUALE
+- Root:
+  - `index.html`
+  - `manifest.json`
+  - `service-worker.js`
+  - `js/app-version.js`
+  - `css/base.css`
+- Login:
+  - `login/login.html`
+  - `login/login.js`
+  - `login/login.css`
+- Todo:
+  - `todos/todos.html`
+  - `todos/todos.js`
+  - `todos/todos.css`
+- Admin:
+  - `admin/admin.html`
+  - `admin/admin.js`
+  - `admin/admin.css`
+- API backend:
+  - `api/*.js`
+  - `api/todos/*.js`
+  - `api/push-*.js`
+  - `api/_db.js`, `api/_helpers.js`
+
+FUNZIONALITÀ CHIAVE
+LOGIN
+- login via pagina `login/login.html`.
+- sessione utente salvata in `localStorage` via `js/session.js`.
+- redirect automatico a login se l’utente non è autenticato.
+
+TODO
+- ogni todo contiene data, testo, utente creatore, stato e visibilità privata.
+- i todo sono filtrati per gruppo e mostrano anche i privati dell’utente loggato.
+- le attività completate sono separate visivamente e appaiono in fondo.
+- le attività completate devono avere una decorazione evidente (barrato/underline colorato).- la modifica delle attività avviene tramite click sulla riga / sul testo del todo, non tramite un’icona di edit separata.
+ADMIN
+- la pagina admin permette di selezionare un utente registrato, vedere i suoi dati e aggiornare il gruppo.
+- l’accesso admin deve essere controllato lato frontend/backend.
+
+PUSH E SYNC
+- notifiche push basate su Web Push API e Service Worker.
+- l’utente può attivare/disattivare le notifiche da interfaccia.
+- le sottoscrizioni vengono salvate e cancellate tramite API dedicate.
+- ogni modifica/add/completamento di un todo invia notifiche al gruppo.
+- la PWA deve registrare il service worker in `index.html`.
+
+VERSIONE E DEPLOY
+- `js/app-version.js` contiene `APP_VERSION` visibile nell’interfaccia.
+- `service-worker.js` utilizza `CACHE_NAME` con versione incrementale.
+- ad ogni aggiornamento frontend/statico, incrementare la versione cache e aggiornare il version display.
+- dopo ogni modifica, eseguire commit e push obbligatori.
+
+NOTE DI IMPLEMENTAZIONE
+- non usare framework pesanti: HTML/CSS/JS plain.
+- mantenere la struttura a moduli con file separati per pagina.
+- non inserire token reali nei file pubblici.
+- il progetto deve rimanere pronto per deploy su GitHub/Vercel.
+
+RISULTATI ATTESI
+Aggiornare e mantenere il prompt in `Prompt.txt` in modo che combaci con il codice reale.
+Il prompt deve includere:
+- descrizione del progetto come esistente
+- struttura di file corrente
+- regole di commit/push/versione
+- dettagli sulla PWA, admin, API e push
+- avviso sul bump di `service-worker.js` e `js/app-version.js` ad ogni modifica
+
+Questa versione del prompt è lo stato aggiornato e allineato al progetto. Mantieni queste regole per tutte le modifiche future.
+

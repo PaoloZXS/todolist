@@ -13,38 +13,15 @@
 .todo-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  padding-bottom: 16px;
+  justify-content: space-between;
   gap: 12px;
 }
-
-.todo-title {
-  margin: 0;
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #2ecc40;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
+.todo-header > div:first-child {
+  min-width: 0;
 }
-
-.todo-title .app-version {
-  font-size: 0.85rem;
-  font-weight: 500;
-  opacity: 0.8;
-  vertical-align: super;
-  margin-left: 4px;
-}
-
-.header-divider {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  margin: 0 0 16px 0;
-}
-
-#notificationStatus {
-  position: absolute;
-  right: 0;
+.todo-header .page-title {
+  font-size: 1.8rem;
+  white-space: nowrap;
 }
 
 .notification-status {
