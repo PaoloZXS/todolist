@@ -883,3 +883,43 @@
     white-space: normal;
   }
 }
+
+/* Final override for header title alignment/style across all viewports */
+.todo-header {
+  justify-content: center !important;
+  position: relative;
+  min-height: 44px;
+}
+
+.todo-header .todo-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  width: auto !important;
+  max-width: calc(100% - 64px);
+  font-size: clamp(2rem, 2.4vw, 2.6rem);
+  font-weight: 700;
+  color: #2ecc40;
+  text-align: center !important;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#notificationStatus,
+.notification-status {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  margin-left: 0;
+}
+
+@media (max-width: 560px) {
+  .todo-header .todo-title {
+    font-size: 2.2rem;
+    max-width: calc(100% - 56px);
+  }
+}
