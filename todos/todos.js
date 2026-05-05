@@ -92,10 +92,10 @@ if (isMobile) {
 }
 
 userGreeting.textContent = `Ciao, ${user.name}`;
+document.title = `GeoList ${APP_VERSION}`;
 const appVersionLabel = document.getElementById("appVersion");
 if (appVersionLabel) {
   appVersionLabel.textContent = APP_VERSION;
-  document.title = `GeoList ${APP_VERSION}`;
 }
 
 console.log("[PWA] isStandalone:", isStandalone);
